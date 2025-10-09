@@ -9,8 +9,10 @@ dependencies {
     implementation(project(":modules:model"))
     implementation(project(":modules:exception"))
     implementation(project(":modules:infrastructure"))
+    implementation(project(":modules:auth"))
 
     implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework:spring-tx")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

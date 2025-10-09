@@ -16,8 +16,9 @@ import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 @ComponentScan(basePackages = {
     "dev.breakin.api",
     "dev.breakin.service",
-    "dev.breakin.infrastructure",
-    "dev.breakin.jdbc"  // JDBC 구현체 클래스 스캔
+    "dev.breakin.infra",
+    "dev.breakin.jdbc" , // JDBC 구현체 클래스 스캔
+    "dev.breakin.auth"
 })
 @EnableJdbcRepositories(basePackages = "dev.breakin.jdbc")  // CrudRepository 인터페이스 스캔
 public class ModuleScanConfig {

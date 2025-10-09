@@ -7,6 +7,7 @@ apply(plugin = "io.spring.dependency-management")
 
 dependencies {
     implementation(project(":modules:api"))
+    implementation(project(":modules:exception"))
     implementation(project(":modules:service"))
     implementation(project(":modules:repository-jdbc"))
     implementation(project(":modules:schema"))  // DDL/DML 스크립트

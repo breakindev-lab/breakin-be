@@ -1,9 +1,10 @@
+
 spring:
   application:
     name: breakin-application-api
 
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -11,11 +12,15 @@ spring:
   h2:
     console:
       enabled: true
-      path: /h2-console
-
   sql:
     init:
       mode: embedded
+
+  # Spring Data JDBC 설정
+  data:
+    jdbc:
+      repositories:
+        enabled: true
 
 server:
   port: 8080
@@ -24,9 +29,28 @@ logging:
   level:
     dev.breakin: DEBUG
     org.springframework.jdbc: DEBUG
+    org.springframework.jdbc.support: TRACE
+    org.springframework.transaction: DEBUG
 
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
   api-docs:
     path: /api-docs
+
+# Security 설정
+breakin:
+  security:
+    # 로컬 테스트용 - 모든 경로 허용
+    permit-all-paths:
+      - /**
+
+    # 프로덕션 설정 (주석 처리)
+#    secure-all-paths: false
+#    secured-path-pattern: /api/**
+#    permit-all-paths:
+#      - /api/auth/login
+#      - /api/auth/signup
+#      - /swagger-ui/**
+#      - /api-docs/**
+#      - /h2-console/**
