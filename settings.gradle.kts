@@ -13,7 +13,11 @@ include(":modules:repository-jdbc")
 include(":modules:api")
 include(":modules:schema")
 include(":modules:application-api")
-
+include(":modules:application-batch")
+include(":modules:openai-base")
+include(":modules:elasticsearch")
+include(":modules:auth")
+include(":modules:external-resource-crawl")
 pluginManagement {
     buildscript {
         repositories {
@@ -31,3 +35,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+include("modules:openai-base")
+include("modules:elasticsearch")

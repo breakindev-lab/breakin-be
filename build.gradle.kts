@@ -29,7 +29,14 @@ val javaProjects = listOf(
     project(":modules:repository-jdbc"),
     project(":modules:api"),
     project(":modules:schema"),
-    project(":modules:application-api")
+    project(":modules:application-api"),
+    project(":modules:openai-base"),
+    project(":modules:elasticsearch"),
+    project(":modules:auth"),
+
+    project(":modules:crawler-batch")
+
+
 )
 
 configure(javaProjects) {
@@ -59,5 +66,6 @@ configure(javaProjects) {
 
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
+        options.compilerArgs.add("-parameters")
     }
 }
