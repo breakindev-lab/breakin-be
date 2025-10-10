@@ -1,5 +1,6 @@
 package dev.breakin.jdbc.job.repository;
 
+import dev.breakin.model.common.Company;
 import dev.breakin.model.common.Popularity;
 import dev.breakin.model.job.CareerLevel;
 import dev.breakin.model.job.EmploymentType;
@@ -29,7 +30,7 @@ public class JobEntity {
     @Id
     private Long id;
     private String url;
-    private String company;
+    private Company company;
     private String title;
     private String organization;
     private String markdownBody;
@@ -50,7 +51,24 @@ public class JobEntity {
     private Instant endedAt;
     private Boolean isOpenEnded;
     private Boolean isClosed;
-    private String location;
+
+    // 1:N 관계 - job_locations 테이블로 분리
+    @MappedCollection(idColumn = "job_id", keyColumn = "job_id")
+    private Set<JobLocation> locations;
+
+    private String positionIntroduction;
+
+    @MappedCollection(idColumn = "job_id", keyColumn = "job_id")
+    private Set<JobResponsibility> responsibilities;
+
+    @MappedCollection(idColumn = "job_id", keyColumn = "job_id")
+    private Set<JobQualification> qualifications;
+
+    @MappedCollection(idColumn = "job_id", keyColumn = "job_id")
+    private Set<JobPreferredQualification> preferredQualifications;
+
+    private String fullDescription;
+
     private Boolean hasAssignment;
     private Boolean hasCodingTest;
     private Boolean hasLiveCoding;

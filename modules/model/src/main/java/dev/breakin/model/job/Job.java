@@ -1,6 +1,7 @@
 package dev.breakin.model.job;
 
 import dev.breakin.model.AuditProps;
+import dev.breakin.model.common.Company;
 import dev.breakin.model.common.Popularity;
 import dev.breakin.model.common.TechCategory;
 import lombok.Value;
@@ -11,7 +12,7 @@ import java.util.List;
 public class Job implements AuditProps {
     Long jobId;
     String url;
-    String company;
+    Company company;
     String title;
     String organization;
     String markdownBody;
@@ -28,7 +29,12 @@ public class Job implements AuditProps {
     Instant endedAt;
     Boolean isOpenEnded;
     Boolean isClosed;
-    String location;
+    List<String> locations;
+    String positionIntroduction;
+    List<String> responsibilities;
+    List<String> qualifications;
+    List<String> preferredQualifications;
+    String fullDescription;
     Boolean hasAssignment;
     Boolean hasCodingTest;
     Boolean hasLiveCoding;
@@ -41,11 +47,11 @@ public class Job implements AuditProps {
 
     public static Job newJob(
         String url,
-        String company,
+        Company company,
         String title,
         String organization,
         String markdownBody,
-        String location
+        List<String> locations
     ) {
         Instant now = Instant.now();
         return new Job(
@@ -68,7 +74,12 @@ public class Job implements AuditProps {
             null,
             false,
             false,
-            location,
+            locations,
+            null,
+            List.of(),
+            List.of(),
+            List.of(),
+            null,
             false,
             false,
             false,
@@ -86,8 +97,10 @@ public class Job implements AuditProps {
             jobId, url, company, title, organization, markdownBody, oneLineSummary,
             minYears, maxYears, experienceRequired, careerLevel, employmentType,
             positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-            isOpenEnded, true, location, hasAssignment, hasCodingTest, hasLiveCoding,
-            interviewCount, interviewDays, popularity, isDeleted, createdAt, Instant.now()
+            isOpenEnded, true, locations, positionIntroduction, responsibilities,
+            qualifications, preferredQualifications, fullDescription, hasAssignment,
+            hasCodingTest, hasLiveCoding, interviewCount, interviewDays, popularity,
+            isDeleted, createdAt, Instant.now()
         );
     }
 
@@ -96,9 +109,10 @@ public class Job implements AuditProps {
             jobId, url, company, title, organization, markdownBody, oneLineSummary,
             minYears, maxYears, experienceRequired, careerLevel, employmentType,
             positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-            isOpenEnded, isClosed, location, hasAssignment, hasCodingTest, hasLiveCoding,
-            interviewCount, interviewDays, popularity.incrementViewCount(), isDeleted,
-            createdAt, Instant.now()
+            isOpenEnded, isClosed, locations, positionIntroduction, responsibilities,
+            qualifications, preferredQualifications, fullDescription, hasAssignment,
+            hasCodingTest, hasLiveCoding, interviewCount, interviewDays,
+            popularity.incrementViewCount(), isDeleted, createdAt, Instant.now()
         );
     }
 
@@ -107,9 +121,10 @@ public class Job implements AuditProps {
                 jobId, url, company, title, organization, markdownBody, oneLineSummary,
                 minYears, maxYears, experienceRequired, careerLevel, employmentType,
                 positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-                isOpenEnded, isClosed, location, hasAssignment, hasCodingTest, hasLiveCoding,
-                interviewCount, interviewDays, popularity.incrementViewCount(adder), isDeleted,
-                createdAt, Instant.now()
+                isOpenEnded, isClosed, locations, positionIntroduction, responsibilities,
+                qualifications, preferredQualifications, fullDescription, hasAssignment,
+                hasCodingTest, hasLiveCoding, interviewCount, interviewDays,
+                popularity.incrementViewCount(adder), isDeleted, createdAt, Instant.now()
         );
     }
 
@@ -118,9 +133,10 @@ public class Job implements AuditProps {
             jobId, url, company, title, organization, markdownBody, oneLineSummary,
             minYears, maxYears, experienceRequired, careerLevel, employmentType,
             positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-            isOpenEnded, isClosed, location, hasAssignment, hasCodingTest, hasLiveCoding,
-            interviewCount, interviewDays, popularity.incrementCommentCount(), isDeleted,
-            createdAt, Instant.now()
+            isOpenEnded, isClosed, locations, positionIntroduction, responsibilities,
+            qualifications, preferredQualifications, fullDescription, hasAssignment,
+            hasCodingTest, hasLiveCoding, interviewCount, interviewDays,
+            popularity.incrementCommentCount(), isDeleted, createdAt, Instant.now()
         );
     }
 
@@ -129,9 +145,10 @@ public class Job implements AuditProps {
             jobId, url, company, title, organization, markdownBody, oneLineSummary,
             minYears, maxYears, experienceRequired, careerLevel, employmentType,
             positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-            isOpenEnded, isClosed, location, hasAssignment, hasCodingTest, hasLiveCoding,
-            interviewCount, interviewDays, popularity.incrementLikeCount(), isDeleted,
-            createdAt, Instant.now()
+            isOpenEnded, isClosed, locations, positionIntroduction, responsibilities,
+            qualifications, preferredQualifications, fullDescription, hasAssignment,
+            hasCodingTest, hasLiveCoding, interviewCount, interviewDays,
+            popularity.incrementLikeCount(), isDeleted, createdAt, Instant.now()
         );
     }
 
@@ -140,9 +157,10 @@ public class Job implements AuditProps {
             jobId, url, company, title, organization, markdownBody, oneLineSummary,
             minYears, maxYears, experienceRequired, careerLevel, employmentType,
             positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-            isOpenEnded, isClosed, location, hasAssignment, hasCodingTest, hasLiveCoding,
-            interviewCount, interviewDays, popularity.decrementLikeCount(), isDeleted,
-            createdAt, Instant.now()
+            isOpenEnded, isClosed, locations, positionIntroduction, responsibilities,
+            qualifications, preferredQualifications, fullDescription, hasAssignment,
+            hasCodingTest, hasLiveCoding, interviewCount, interviewDays,
+            popularity.decrementLikeCount(), isDeleted, createdAt, Instant.now()
         );
     }
 
@@ -151,8 +169,10 @@ public class Job implements AuditProps {
             jobId, url, company, title, organization, markdownBody, oneLineSummary,
             minYears, maxYears, experienceRequired, careerLevel, employmentType,
             positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-            isOpenEnded, isClosed, location, hasAssignment, hasCodingTest, hasLiveCoding,
-            interviewCount, interviewDays, popularity, true, createdAt, Instant.now()
+            isOpenEnded, isClosed, locations, positionIntroduction, responsibilities,
+            qualifications, preferredQualifications, fullDescription, hasAssignment,
+            hasCodingTest, hasLiveCoding, interviewCount, interviewDays, popularity,
+            true, createdAt, Instant.now()
         );
     }
 }

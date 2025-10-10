@@ -34,7 +34,9 @@ val javaProjects = listOf(
     project(":modules:elasticsearch"),
     project(":modules:auth"),
 
-    project(":modules:crawler-batch")
+    project(":modules:external-resource-crawl"),
+
+    project(":modules:application-batch")
 
 
 )

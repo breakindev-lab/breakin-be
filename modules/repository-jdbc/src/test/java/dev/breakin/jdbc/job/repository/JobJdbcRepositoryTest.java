@@ -45,14 +45,19 @@ class JobJdbcRepositoryTest {
             true,                           // experienceRequired
             CareerLevel.EXPERIENCED,        // careerLevel
             EmploymentType.FULL_TIME,       // employmentType
-            PositionCategory.ENGINEERING,   // positionCategory
+            PositionCategory.BACKEND,       // positionCategory
             RemotePolicy.HYBRID,            // remotePolicy
             List.of(TechCategory.JAVA, TechCategory.MYSQL),      // techCategories
             Instant.now(),                  // startedAt
             null,                           // endedAt
             true,                           // isOpenEnded
             false,                          // isClosed
-            "Seoul",                        // location
+            List.of("Seoul"),               // locations
+            "Position intro",               // positionIntroduction
+            List.of("Develop APIs", "Write tests"),  // responsibilities
+            List.of("Java 3+ years", "Spring experience"),  // qualifications
+            List.of("MSA experience", "Open source contributions"),  // preferredQualifications
+            "Full job description",         // fullDescription
             false,                          // hasAssignment
             true,                           // hasCodingTest
             false,                          // hasLiveCoding
@@ -87,7 +92,7 @@ class JobJdbcRepositoryTest {
         assertThat(saved.getMarkdownBody()).isEqualTo(jobToSave.getMarkdownBody());
         assertThat(saved.getCareerLevel()).isEqualTo(jobToSave.getCareerLevel());
         assertThat(saved.getEmploymentType()).isEqualTo(jobToSave.getEmploymentType());
-        assertThat(saved.getLocation()).isEqualTo(jobToSave.getLocation());
+        assertThat(saved.getLocations()).isEqualTo(jobToSave.getLocations());
         assertThat(saved.getTechCategories().containsAll(jobToSave.getTechCategories())).isTrue();
     }
 
@@ -136,9 +141,10 @@ class JobJdbcRepositoryTest {
         Job saved2 = jobRepository.save(new Job(
                 null, "https://example.com/job2", "Company B", "Frontend Developer",
                 "Design Team", "Description", "Summary", 1, 3, false,
-                CareerLevel.ENTRY, EmploymentType.CONTRACT, PositionCategory.ENGINEERING,
+                CareerLevel.ENTRY, EmploymentType.CONTRACT, PositionCategory.FRONTEND,
                 RemotePolicy.REMOTE, List.of(TechCategory.JAVA), Instant.now(), null, true, false,
-                "Busan", false, false, false, 2, 20, Popularity.empty(), false, Instant.now(), Instant.now()
+                List.of("Busan"), "Intro", List.of(), List.of(), List.of(), null,
+                false, false, false, 2, 20, Popularity.empty(), false, Instant.now(), Instant.now()
         ));
 
         // when
@@ -191,16 +197,18 @@ class JobJdbcRepositoryTest {
         Job saved2 = jobRepository.save(new Job(
                 null, "https://example.com/job2", "Company A", "Frontend Developer",
                 "Design Team", "Description", "Summary", 1, 3, false,
-                CareerLevel.ENTRY, EmploymentType.CONTRACT, PositionCategory.ENGINEERING,
+                CareerLevel.ENTRY, EmploymentType.CONTRACT, PositionCategory.FRONTEND,
                 RemotePolicy.REMOTE, List.of(TechCategory.JAVA), Instant.now(), null, true, false,
-                "Busan", false, false, false, 2, 20, Popularity.empty(), false, Instant.now(), Instant.now()
+                List.of("Busan"), "Intro", List.of(), List.of(), List.of(), null,
+                false, false, false, 2, 20, Popularity.empty(), false, Instant.now(), Instant.now()
         ));
         jobRepository.save(new Job(
                 null, "https://example.com/job3", "Company B", "Backend Developer",
                 "Tech Team", "Description", "Summary", 2, 5, true,
-                CareerLevel.EXPERIENCED, EmploymentType.FULL_TIME, PositionCategory.ENGINEERING,
+                CareerLevel.EXPERIENCED, EmploymentType.FULL_TIME, PositionCategory.BACKEND,
                 RemotePolicy.HYBRID, List.of(TechCategory.JAVA), Instant.now(), null, true, false,
-                "Seoul", false, false, false, 3, 30, Popularity.empty(), false, Instant.now(), Instant.now()
+                List.of("Seoul"), "Intro", List.of(), List.of(), List.of(), null,
+                false, false, false, 3, 30, Popularity.empty(), false, Instant.now(), Instant.now()
         ));
 
         // when

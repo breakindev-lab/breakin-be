@@ -47,18 +47,13 @@ public abstract class AbstractSingleGptRunner<T> implements SingleGptRunner<T> {
                 .temperature(0.3)
                 .build());
 
-        log.info("prompt: {}", prompt.toString());
 
         Generation generation = chatModel.call(prompt).getResult();
         String raw = CleanJson.cleanJsonString(generation.getOutput().getText());
 
-        log.info("type -> {}", type);
-        log.info("test1 : {}", type == String.class);
-        log.info("test2 : {}", type.equals(String.class));
 
         try {
             if (type.equals(String.class)) {
-                log.info("return string result - ");
                 return (T) raw;
             }
 

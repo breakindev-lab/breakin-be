@@ -6,5 +6,16 @@ package dev.breakin.model.job;
 public enum EmploymentType {
     FULL_TIME,  // 정규직
     CONTRACT,   // 계약직
-    INTERN      // 인턴
+    INTERN,     // 인턴
+    UNKNOWN;    // 정보 없음
+
+    public static EmploymentType from(String value) {
+        if (value == null) return UNKNOWN;
+
+        try {
+            return EmploymentType.valueOf(value.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("value : " + value);
+        }
+    }
 }

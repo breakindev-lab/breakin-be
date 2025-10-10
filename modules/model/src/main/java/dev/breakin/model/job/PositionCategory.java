@@ -4,7 +4,22 @@ package dev.breakin.model.job;
  * 포지션 카테고리 Enum
  */
 public enum PositionCategory {
-    ENGINEERING,  // 엔지니어링
-    PRODUCT,      // 프로덕트
-    DATA          // 데이터
+    BACKEND,
+    FRONTEND,
+    FULLSTACK,
+    MOBILE,
+    DATA,
+    ML_AI,
+    DEVOPS,
+    HARDWARE,
+    QA,
+    NOT_CATEGORIZED;
+
+    public static PositionCategory fromString(String input) {
+        try {
+            return PositionCategory.valueOf(input.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid PositionCategory: " + input);
+        }
+    }
 }

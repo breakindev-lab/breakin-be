@@ -1,6 +1,7 @@
 package dev.breakin.service.job.impl;
 
 import dev.breakin.infra.job.repository.JobRepository;
+import dev.breakin.model.common.Company;
 import dev.breakin.model.common.Popularity;
 import dev.breakin.model.common.TechCategory;
 import dev.breakin.model.job.*;
@@ -29,7 +30,7 @@ class DefaultJobWriterTest {
     private final Job sampleJob = new Job(
         1L,                              // jobId
         "https://example.com/job/1",     // url
-        "test company",                  // company
+        Company.META,                  // company
         "test title",                    // title
         "test organization",             // organization
         "test markdown body",            // markdownBody
@@ -46,7 +47,7 @@ class DefaultJobWriterTest {
         null,                            // endedAt
         false,                           // isOpenEnded
         false,                           // isClosed
-        "Seoul",                         // location
+        List.of("Seoul"),                         // location
         false,                           // hasAssignment
         false,                           // hasCodingTest
         false,                           // hasLiveCoding
@@ -63,11 +64,11 @@ class DefaultJobWriterTest {
         // given
         Job newJob = Job.newJob(
             "https://example.com/job/new",
-            "new company",
+            Company.META,
             "new title",
             "new organization",
             "new markdown body",
-            "Seoul"
+            List.of("Seoul")
         );
         when(jobRepository.save(any(Job.class)))
             .thenReturn(sampleJob);
@@ -85,11 +86,11 @@ class DefaultJobWriterTest {
     void upsert_existingJob_callsRepositorySave() {
         // given
         Job updatedJob = new Job(
-            1L, "https://example.com/job/1", "updated company", "updated title",
+            1L, "https://example.com/job/1", Company.META, "updated title",
             "test organization", "updated body", "updated summary",
             0, 3, false, CareerLevel.ENTRY, EmploymentType.FULL_TIME,
             PositionCategory.ENGINEERING, RemotePolicy.ONSITE, List.of(TechCategory.JAVA),
-            Instant.now(), null, false, false, "Seoul",
+            Instant.now(), null, false, false, List.of("Seoul"),
             false, false, false, 3, 7,
             Popularity.empty(), false, Instant.now(), Instant.now()
         );
@@ -110,11 +111,11 @@ class DefaultJobWriterTest {
     void upsert_jobWithTechCategories_callsRepositorySave() {
         // given
         Job jobWithTech = new Job(
-            null, "https://example.com/job/tech", "tech company", "tech title",
+            null, "https://example.com/job/tech", Company.META, "tech title",
             "tech org", "tech body", null, 0, 5, false,
             CareerLevel.EXPERIENCED, EmploymentType.FULL_TIME, PositionCategory.ENGINEERING,
             RemotePolicy.ONSITE, List.of(TechCategory.JAVA, TechCategory.MYSQL),
-            Instant.now(), null, false, false, "Seoul",
+            Instant.now(), null, false, false, List.of("Seoul"),
             true, true, false, 2, 5,
             Popularity.empty(), false, Instant.now(), Instant.now()
         );

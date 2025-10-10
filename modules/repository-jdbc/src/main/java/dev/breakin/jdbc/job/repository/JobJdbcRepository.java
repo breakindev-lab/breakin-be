@@ -78,6 +78,45 @@ public class JobJdbcRepository implements JobRepository {
      * Spring Data JDBC가 자동으로 컬렉션과 embedded 객체를 처리
      */
     private Job toDomain(JobEntity entity) {
+        List<String> responsibilities = entity.getResponsibilities() != null ?
+                entity.getResponsibilities().stream()
+                        .map(JobResponsibility::getResponsibility)
+                        .collect(Collectors.toList()) : List.of();
+
+        List<String> qualifications = entity.getQualifications() != null ?
+                entity.getQualifications().stream()
+                        .map(JobQualification::getQualification)
+                        .collect(Collectors.toList()) : List.of();
+
+        List<String> preferredQualifications = entity.getPreferredQualifications() != null ?
+                entity.getPreferredQualifications().stream()
+                        .map(JobPreferredQualification::getPreferredQualification)
+                        .collect(Collectors.toList()) : List.of();
+
+        // fullDescription 생성 (DB에 저장된 값이 있으면 사용, 없으면 조합)
+        String fullDescription = entity.getFullDescription();
+        if (fullDescription == null || fullDescription.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            if (entity.getPositionIntroduction() != null && !entity.getPositionIntroduction().isEmpty()) {
+                sb.append(entity.getPositionIntroduction()).append("\n\n");
+            }
+            if (!responsibilities.isEmpty()) {
+                sb.append("## Responsibilities\n");
+                responsibilities.forEach(r -> sb.append("- ").append(r).append("\n"));
+                sb.append("\n");
+            }
+            if (!qualifications.isEmpty()) {
+                sb.append("## Qualifications\n");
+                qualifications.forEach(q -> sb.append("- ").append(q).append("\n"));
+                sb.append("\n");
+            }
+            if (!preferredQualifications.isEmpty()) {
+                sb.append("## Preferred Qualifications\n");
+                preferredQualifications.forEach(pq -> sb.append("- ").append(pq).append("\n"));
+            }
+            fullDescription = sb.toString().trim();
+        }
+
         return new Job(
                 entity.getId(),
                 entity.getUrl(),
@@ -101,7 +140,15 @@ public class JobJdbcRepository implements JobRepository {
                 entity.getEndedAt(),
                 entity.getIsOpenEnded(),
                 entity.getIsClosed(),
-                entity.getLocation(),
+                entity.getLocations() != null ?
+                        entity.getLocations().stream()
+                                .map(JobLocation::getLocationName)
+                                .collect(Collectors.toList()) : List.of(),
+                entity.getPositionIntroduction(),
+                responsibilities,
+                qualifications,
+                preferredQualifications,
+                fullDescription,
                 entity.getHasAssignment(),
                 entity.getHasCodingTest(),
                 entity.getHasLiveCoding(),
@@ -138,7 +185,24 @@ public class JobJdbcRepository implements JobRepository {
                 domain.getEndedAt(),
                 domain.getIsOpenEnded(),
                 domain.getIsClosed(),
-                domain.getLocation(),
+                domain.getLocations() != null ?
+                        domain.getLocations().stream()
+                                .map(JobLocation::new)
+                                .collect(Collectors.toSet()) : new HashSet<>(),
+                domain.getPositionIntroduction(),
+                domain.getResponsibilities() != null ?
+                        domain.getResponsibilities().stream()
+                                .map(JobResponsibility::new)
+                                .collect(Collectors.toSet()) : new HashSet<>(),
+                domain.getQualifications() != null ?
+                        domain.getQualifications().stream()
+                                .map(JobQualification::new)
+                                .collect(Collectors.toSet()) : new HashSet<>(),
+                domain.getPreferredQualifications() != null ?
+                        domain.getPreferredQualifications().stream()
+                                .map(JobPreferredQualification::new)
+                                .collect(Collectors.toSet()) : new HashSet<>(),
+                domain.getFullDescription(),
                 domain.getHasAssignment(),
                 domain.getHasCodingTest(),
                 domain.getHasLiveCoding(),

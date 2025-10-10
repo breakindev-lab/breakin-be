@@ -118,7 +118,8 @@ CREATE TABLE IF NOT EXISTS jobs (
     ended_at TIMESTAMP,
     is_open_ended BOOLEAN NOT NULL DEFAULT FALSE,
     is_closed BOOLEAN NOT NULL DEFAULT FALSE,
-    location VARCHAR(255) NOT NULL,
+    position_introduction TEXT,
+    full_description TEXT,
     has_assignment BOOLEAN NOT NULL DEFAULT FALSE,
     has_coding_test BOOLEAN NOT NULL DEFAULT FALSE,
     has_live_coding BOOLEAN NOT NULL DEFAULT FALSE,
@@ -142,6 +143,34 @@ CREATE TABLE IF NOT EXISTS job_tech_categories (
     category_name VARCHAR(100) NOT NULL
 );
 -- CREATE INDEX IF NOT EXISTS idx_job_tech_categories_job_id ON job_tech_categories(job_id);
+
+-- Job 위치 테이블 (1:N)
+CREATE TABLE IF NOT EXISTS job_locations (
+    job_id BIGINT NOT NULL,
+    location_name VARCHAR(255) NOT NULL
+);
+-- CREATE INDEX IF NOT EXISTS idx_job_locations_job_id ON job_locations(job_id);
+
+-- Job 책임사항 테이블 (1:N)
+CREATE TABLE IF NOT EXISTS job_responsibilities (
+    job_id BIGINT NOT NULL,
+    responsibility VARCHAR(500) NOT NULL
+);
+-- CREATE INDEX IF NOT EXISTS idx_job_responsibilities_job_id ON job_responsibilities(job_id);
+
+-- Job 자격요건 테이블 (1:N)
+CREATE TABLE IF NOT EXISTS job_qualifications (
+    job_id BIGINT NOT NULL,
+    qualification VARCHAR(500) NOT NULL
+);
+-- CREATE INDEX IF NOT EXISTS idx_job_qualifications_job_id ON job_qualifications(job_id);
+
+-- Job 우대사항 테이블 (1:N)
+CREATE TABLE IF NOT EXISTS job_preferred_qualifications (
+    job_id BIGINT NOT NULL,
+    preferred_qualification VARCHAR(500) NOT NULL
+);
+-- CREATE INDEX IF NOT EXISTS idx_job_preferred_qualifications_job_id ON job_preferred_qualifications(job_id);
 
 -- CommunityPosts 테이블 생성
 CREATE TABLE IF NOT EXISTS community_posts (

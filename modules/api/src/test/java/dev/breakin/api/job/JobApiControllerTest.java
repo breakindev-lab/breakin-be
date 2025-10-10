@@ -56,7 +56,7 @@ class JobApiControllerTest {
             true,                               // experienceRequired
             CareerLevel.EXPERIENCED,            // careerLevel
             EmploymentType.FULL_TIME,           // employmentType
-            PositionCategory.ENGINEERING,       // positionCategory
+            PositionCategory.BACKEND,           // positionCategory
             RemotePolicy.HYBRID,                // remotePolicy
             List.of(TechCategory.JAVA, TechCategory.MYSQL), // techCategories
             Instant.now(),                      // startedAt
