@@ -1,8 +1,8 @@
-package dev.breakin.elasticsearch.queryBuilder.queryComposer;
+package dev.breakin.elasticsearch.internal.queryBuilder.queryComposer;
 
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import dev.breakin.elasticsearch.queryBuilder.BoolType;
+import dev.breakin.elasticsearch.internal.queryBuilder.BoolType;
 
 import java.util.List;
 

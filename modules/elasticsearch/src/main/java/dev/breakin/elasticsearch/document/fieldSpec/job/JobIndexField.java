@@ -1,57 +1,62 @@
 package dev.breakin.elasticsearch.document.fieldSpec.job;
 
 
-import dev.breakin.elasticsearch.document.fieldSpec.FieldName;
-import dev.breakin.elasticsearch.document.fieldSpec.QueryType;
+import dev.breakin.elasticsearch.document.fieldSpec.DocFieldName;
+import dev.breakin.elasticsearch.document.fieldSpec.DocQueryType;
+import dev.breakin.elasticsearch.internal.queryBuilder.FieldName;
 
-public enum JobIndexField implements FieldName {
-    DOC_ID("doc_id", QueryType.TERM),
-    JOB_ID("job_id", QueryType.TERM),
-    URL("url", QueryType.TERM),
+public enum JobIndexField implements DocFieldName, FieldName {
+    DOC_ID("doc_id", DocQueryType.TERM),
+    JOB_ID("job_id", DocQueryType.TERM),
+    URL("url", DocQueryType.TERM),
 
-    COMPANY("company", QueryType.TERM),
-    TITLE("title", QueryType.MATCH),
-    ORGANIZATION("organization", QueryType.TERM),
-    LOCATION("location", QueryType.TERM),
+    COMPANY("company", DocQueryType.TERM),
+    TITLE("title", DocQueryType.MATCH),
+    ORGANIZATION("organization", DocQueryType.TERM),
 
-    EMPLOYMENT_TYPE("employment_type", QueryType.TERM),
-    CAREER_LEVEL("career_level", QueryType.TERM),
-    POSITION_CATEGORY("position_category", QueryType.TERM),
-    REMOTE_POLICY("remote_policy", QueryType.TERM),
-    TECH_CATEGORIES("tech_categories", QueryType.TERM),
+    MIN_YEARS("min_years", DocQueryType.RANGE),
+    MAX_YEARS("max_years", DocQueryType.RANGE),
+    EXPERIENCE_REQUIRED("experience_required", DocQueryType.TERM),
+    CAREER_LEVEL("career_level", DocQueryType.TERM),
 
-    MIN_YEARS("min_years", QueryType.RANGE),
-    MAX_YEARS("max_years", QueryType.RANGE),
-    EXPERIENCE_REQUIRED("experience_required", QueryType.TERM),
+    EMPLOYMENT_TYPE("employment_type", DocQueryType.TERM),
+    POSITION_CATEGORY("position_category", DocQueryType.TERM),
+    REMOTE_POLICY("remote_policy", DocQueryType.TERM),
+    TECH_CATEGORIES("tech_categories", DocQueryType.TERM),
 
-    STARTED_AT("started_at", QueryType.RANGE),
-    ENDED_AT("ended_at", QueryType.RANGE),
-    IS_OPEN_ENDED("is_open_ended", QueryType.TERM),
-    IS_CLOSED("is_closed", QueryType.TERM),
+    STARTED_AT("started_at", DocQueryType.RANGE),
+    ENDED_AT("ended_at", DocQueryType.RANGE),
+    IS_OPEN_ENDED("is_open_ended", DocQueryType.TERM),
+    IS_CLOSED("is_closed", DocQueryType.TERM),
 
-    HAS_ASSIGNMENT("has_assignment", QueryType.TERM),
-    HAS_CODING_TEST("has_coding_test", QueryType.TERM),
-    HAS_LIVE_CODING("has_live_coding", QueryType.TERM),
+    LOCATIONS("locations", DocQueryType.TERM),
 
-    INTERVIEW_COUNT("interview_count", QueryType.RANGE),
-    INTERVIEW_DAYS("interview_days", QueryType.RANGE),
+    FULL_DESCRIPTION("full_description", DocQueryType.MATCH),
 
-    MARKDOWN_BODY("markdown_body", QueryType.MATCH),
-    ONE_LINE_SUMMARY("one_line_summary", QueryType.MATCH),
+    HAS_ASSIGNMENT("has_assignment", DocQueryType.TERM),
+    HAS_CODING_TEST("has_coding_test", DocQueryType.TERM),
+    HAS_LIVE_CODING("has_live_coding", DocQueryType.TERM),
+    INTERVIEW_COUNT("interview_count", DocQueryType.RANGE),
+    INTERVIEW_DAYS("interview_days", DocQueryType.RANGE),
 
-    POPULARITY("popularity", QueryType.NESTED), // nested 루트
-    POPULARITY_VIEW_COUNT("popularity.view_count", QueryType.RANGE),
-    POPULARITY_COMMENT_COUNT("popularity.comment_count", QueryType.RANGE),
-    POPULARITY_LIKE_COUNT("popularity.like_count", QueryType.RANGE),
+    COMPENSATION_MIN_BASE_PAY("compensation_min_base_pay", DocQueryType.RANGE),
+    COMPENSATION_MAX_BASE_PAY("compensation_max_base_pay", DocQueryType.RANGE),
+    COMPENSATION_CURRENCY("compensation_currency", DocQueryType.TERM),
+    COMPENSATION_UNIT("compensation_unit", DocQueryType.TERM),
+    COMPENSATION_HAS_STOCK_OPTION("compensation_has_stock_option", DocQueryType.TERM),
 
-    CREATED_AT("created_at", QueryType.RANGE),
-    UPDATED_AT("updated_at", QueryType.RANGE),
-    DELETED("deleted", QueryType.TERM);
+    POPULARITY_VIEW_COUNT("popularity_view_count", DocQueryType.RANGE),
+    POPULARITY_COMMENT_COUNT("popularity_comment_count", DocQueryType.RANGE),
+    POPULARITY_LIKE_COUNT("popularity_like_count", DocQueryType.RANGE),
+
+    DELETED("deleted", DocQueryType.TERM),
+    CREATED_AT("created_at", DocQueryType.RANGE),
+    UPDATED_AT("updated_at", DocQueryType.RANGE);
 
     private final String fieldName;
-    private final QueryType queryType;
+    private final DocQueryType queryType;
 
-    JobIndexField(String fieldName, QueryType queryType) {
+    JobIndexField(String fieldName, DocQueryType queryType) {
         this.fieldName = fieldName;
         this.queryType = queryType;
     }
@@ -61,7 +66,7 @@ public enum JobIndexField implements FieldName {
         return fieldName;
     }
 
-    public QueryType getQueryType() {
+    public DocQueryType getQueryType() {
         return queryType;
     }
 }

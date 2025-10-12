@@ -1,10 +1,10 @@
-package dev.breakin.elasticsearch.queryBuilder.queryBuilder;
+package dev.breakin.elasticsearch.internal.queryBuilder.queryBuilder;
 
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
 import co.elastic.clients.json.JsonData;
-import dev.breakin.elasticsearch.queryBuilder.BoolType;
+import dev.breakin.elasticsearch.internal.queryBuilder.BoolType;
 
 public class RangeQueryBuilder {
     private final BoolType boolType;

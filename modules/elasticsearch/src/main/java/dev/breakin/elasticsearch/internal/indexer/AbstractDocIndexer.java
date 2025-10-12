@@ -1,16 +1,13 @@
-package dev.breakin.elasticsearch.indexer;
+package dev.breakin.elasticsearch.internal.indexer;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import dev.breakin.elasticsearch.document.DocBase;
-import dev.breakin.elasticsearch.document.JobDoc;
 import dev.breakin.elasticsearch.exception.DocumentIndexingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.print.Doc;
 import java.io.IOException;
 
 @RequiredArgsConstructor

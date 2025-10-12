@@ -1,4 +1,4 @@
-package dev.breakin.elasticsearch.indexer;
+package dev.breakin.elasticsearch.internal.indexer;
 
 import dev.breakin.elasticsearch.document.DocBase;
 

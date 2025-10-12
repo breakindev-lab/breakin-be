@@ -1,9 +1,9 @@
-package dev.breakin.elasticsearch.queryBuilder.queryBuilder;
+package dev.breakin.elasticsearch.internal.queryBuilder.queryBuilder;
 
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import dev.breakin.elasticsearch.queryBuilder.BoolType;
-import dev.breakin.elasticsearch.queryBuilder.FieldQueryBuilder;
+import dev.breakin.elasticsearch.internal.queryBuilder.BoolType;
+import dev.breakin.elasticsearch.internal.queryBuilder.FieldQueryBuilder;
 
 public class MatchQueryBuilder implements FieldQueryBuilder {
     private final BoolType boolType;

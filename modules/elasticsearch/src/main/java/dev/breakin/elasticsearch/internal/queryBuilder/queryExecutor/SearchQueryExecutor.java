@@ -1,4 +1,4 @@
-package dev.breakin.elasticsearch.queryBuilder.queryExecutor;
+package dev.breakin.elasticsearch.internal.queryBuilder.queryExecutor;
 
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
@@ -6,7 +6,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import dev.breakin.elasticsearch.exception.ElasticsearchQueryException;
-import dev.breakin.elasticsearch.queryBuilder.SortOption;
+import dev.breakin.elasticsearch.internal.queryBuilder.SortOption;
 import jakarta.json.stream.JsonGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

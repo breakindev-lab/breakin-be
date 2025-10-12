@@ -1,10 +1,12 @@
-package dev.breakin.elasticsearch.query.job;
+package dev.breakin.elasticsearch.api.job;
 
 import dev.breakin.elasticsearch.document.JobDoc;
-import dev.breakin.elasticsearch.queryBuilder.GenericSearchQueryBuilder;
-import dev.breakin.elasticsearch.queryBuilder.SearchCommand;
-import dev.breakin.elasticsearch.queryBuilder.queryExecutor.SearchQueryExecutor;
-import dev.breakin.elasticsearch.utils.PaginationUtils;
+import dev.breakin.elasticsearch.internal.query.job.JobIndexQueryBuilderRegistry;
+import dev.breakin.elasticsearch.internal.query.job.JobIndexRangeQueryBuilderRegistry;
+import dev.breakin.elasticsearch.internal.queryBuilder.GenericSearchQueryBuilder;
+import dev.breakin.elasticsearch.internal.queryBuilder.SearchCommand;
+import dev.breakin.elasticsearch.internal.queryBuilder.queryExecutor.SearchQueryExecutor;
+import dev.breakin.elasticsearch.internal.utils.PaginationUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

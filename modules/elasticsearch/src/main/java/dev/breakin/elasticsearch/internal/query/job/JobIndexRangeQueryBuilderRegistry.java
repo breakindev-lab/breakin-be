@@ -1,9 +1,9 @@
-package dev.breakin.elasticsearch.query.job;
+package dev.breakin.elasticsearch.internal.query.job;
 
 
 import dev.breakin.elasticsearch.document.fieldSpec.job.JobIndexField;
-import dev.breakin.elasticsearch.queryBuilder.BoolType;
-import dev.breakin.elasticsearch.queryBuilder.queryBuilder.RangeQueryBuilder;
+import dev.breakin.elasticsearch.internal.queryBuilder.BoolType;
+import dev.breakin.elasticsearch.internal.queryBuilder.queryBuilder.RangeQueryBuilder;
 
 import java.util.EnumMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package dev.breakin.elasticsearch.utils;
+package dev.breakin.elasticsearch.internal.utils;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
-package dev.breakin.elasticsearch.indexer.job;
+package dev.breakin.elasticsearch.api.job;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import dev.breakin.elasticsearch.document.DocBase;
-import dev.breakin.elasticsearch.indexer.AbstractDocIndexer;
+import dev.breakin.elasticsearch.internal.indexer.AbstractDocIndexer;
 import org.springframework.stereotype.Component;
 
 @Component

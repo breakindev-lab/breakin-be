@@ -1,4 +1,4 @@
-package dev.breakin.elasticsearch.queryBuilder;
+package dev.breakin.elasticsearch.internal.queryBuilder;
 
 
 public enum BoolType {

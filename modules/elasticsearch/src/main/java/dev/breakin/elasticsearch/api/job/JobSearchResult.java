@@ -1,4 +1,4 @@
-package dev.breakin.elasticsearch.internal.query.job;
+package dev.breakin.elasticsearch.api.job;
 
 
 import dev.breakin.elasticsearch.document.JobDoc;

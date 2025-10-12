@@ -1,10 +1,10 @@
-package dev.breakin.elasticsearch.queryBuilder;
+package dev.breakin.elasticsearch.internal.queryBuilder;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import dev.breakin.elasticsearch.exception.SearchFieldNotFoundException;
-import dev.breakin.elasticsearch.queryBuilder.queryBuilder.RangeQueryBuilder;
-import dev.breakin.elasticsearch.queryBuilder.queryComposer.BoolQueryComposer;
-import dev.breakin.elasticsearch.queryBuilder.queryComposer.QueryWithBoolType;
+import dev.breakin.elasticsearch.internal.queryBuilder.queryBuilder.RangeQueryBuilder;
+import dev.breakin.elasticsearch.internal.queryBuilder.queryComposer.BoolQueryComposer;
+import dev.breakin.elasticsearch.internal.queryBuilder.queryComposer.QueryWithBoolType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
