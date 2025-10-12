@@ -105,7 +105,6 @@ CREATE TABLE IF NOT EXISTS jobs (
     company VARCHAR(255) NOT NULL,
     title VARCHAR(500) NOT NULL,
     organization VARCHAR(255),
-    markdown_body TEXT,
     one_line_summary VARCHAR(500),
     min_years INT,
     max_years INT,
@@ -125,6 +124,14 @@ CREATE TABLE IF NOT EXISTS jobs (
     has_live_coding BOOLEAN NOT NULL DEFAULT FALSE,
     interview_count INT,
     interview_days INT,
+
+    -- JobCompensation (Embedded) - 컬럼으로 flatten
+    min_base_pay DECIMAL(15, 2),
+    max_base_pay DECIMAL(15, 2),
+    currency VARCHAR(10),
+    unit VARCHAR(20),
+    has_stock_option BOOLEAN,
+    salary_note VARCHAR(1000),
 
     -- Popularity (Embedded) - 컬럼으로 flatten
     view_count BIGINT NOT NULL DEFAULT 0,
