@@ -17,7 +17,9 @@ include(":modules:application-batch")
 include(":modules:openai-base")
 include(":modules:elasticsearch")
 include(":modules:auth")
-include(":modules:external-resource-crawl")
+include(":modules:resource-crawl-task")
+include(":modules:outbox")
+include(":modules:elasticsearch-sync-task")
 pluginManagement {
     buildscript {
         repositories {

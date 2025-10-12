@@ -34,9 +34,12 @@ val javaProjects = listOf(
     project(":modules:elasticsearch"),
     project(":modules:auth"),
 
-    project(":modules:external-resource-crawl"),
+    project(":modules:resource-crawl-task"),
 
-    project(":modules:application-batch")
+    project(":modules:application-batch"),
+    project(":modules:outbox"),
+     project(":modules:elasticsearch-sync-task")
+
 
 
 )
@@ -57,9 +60,13 @@ configure(javaProjects) {
         testCompileOnly("org.projectlombok:lombok:1.18.30")
         testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
 
+        // 테스트 의존성 - BOM 사용
+        testImplementation(platform("org.junit:junit-bom:5.14.0"))
+        testImplementation(platform("org.mockito:mockito-bom:5.20.0"))
+
         testImplementation("org.junit.jupiter:junit-jupiter")
         testImplementation("org.mockito:mockito-junit-jupiter")
-        testImplementation("org.assertj:assertj-core")
+        testImplementation("org.assertj:assertj-core:3.26.3")
     }
 
     tasks.test {

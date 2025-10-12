@@ -1,0 +1,250 @@
+### ============================================
+### API Test Scenarios - localhost:8080
+### ============================================
+
+### ============================================
+### 1. Comment API Tests (nickname 적용 완료 ✅)
+### ============================================
+
+### 1-1. 댓글 작성 (JOB 대상)
+POST http://localhost:8080/api/comments
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "content": "Test comment content",
+  "targetType": "JOB",
+  "targetId": 1
+}
+
+### 1-2. 댓글 조회 (nickname 포함 확인)
+GET http://localhost:8080/api/comments?targetType=JOB&targetId=1
+
+### 1-3. 대댓글 작성
+POST http://localhost:8080/api/comments
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "content": "Test reply content",
+  "targetType": "JOB",
+  "targetId": 1,
+  "parentId": 1
+}
+
+### 1-4. 댓글 수정
+PUT http://localhost:8080/api/comments/1
+Content-Type: application/json
+
+{
+  "content": "Updated comment content"
+}
+
+### 1-5. 댓글 숨김
+POST http://localhost:8080/api/comments/1/hide
+
+### 1-6. 댓글 숨김 해제
+POST http://localhost:8080/api/comments/1/show
+
+
+### ============================================
+### 2. CommunityPost API Tests (nickname 적용 완료 ✅)
+### ============================================
+
+### 2-1. 커뮤니티 게시글 작성
+POST http://localhost:8080/api/community-posts
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "category": "INTERVIEW_SHARE",
+  "title": "Test Post Title",
+  "markdownBody": "Test content",
+  "company": "Test Company",
+  "location": "Seoul"
+}
+
+### 2-2. 게시글 조회 (nickname 포함 확인)
+GET http://localhost:8080/api/community-posts/1
+
+### 2-3. 게시글 수정
+POST http://localhost:8080/api/community-posts
+Content-Type: application/json
+
+{
+  "communityPostId": 1,
+  "userId": 1,
+  "category": "INTERVIEW_SHARE",
+  "title": "Updated Title",
+  "markdownBody": "Updated content",
+  "company": "Test Company",
+  "location": "Seoul"
+}
+
+### 2-4. 게시글 삭제
+DELETE http://localhost:8080/api/community-posts/1
+
+
+### ============================================
+### 3. Job API Tests (nickname 미적용 ⚠️)
+### ============================================
+
+
+
+### ============================================
+### 4. TechBlog API Tests (nickname 미적용 ⚠️)
+### ============================================
+
+### 4-1. 기술블로그 작성
+POST http://localhost:8080/api/tech-blogs
+Content-Type: application/json
+
+{
+  "url": "https://example.com/blog/1",
+  "company": "Test Company",
+  "title": "Test Tech Blog",
+  "markdownBody": "Blog content"
+}
+
+### 4-2. 기술블로그 조회
+GET http://localhost:8080/api/tech-blogs/1
+
+### 4-3. 기술블로그 삭제
+DELETE http://localhost:8080/api/tech-blogs/1
+
+
+### ============================================
+### 5. Reaction API Tests (nickname 미적용 ⚠️)
+### ============================================
+
+### 5-1. 좋아요 추가
+POST http://localhost:8080/api/reactions/like
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "targetType": "JOB",
+  "targetId": 1
+}
+
+### 5-2. 싫어요 추가
+POST http://localhost:8080/api/reactions/dislike
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "targetType": "JOB",
+  "targetId": 1
+}
+
+### 5-3. 좋아요 취소
+DELETE http://localhost:8080/api/reactions/like?userId=1&targetType=JOB&targetId=1
+
+### 5-4. 싫어요 취소
+DELETE http://localhost:8080/api/reactions/dislike?userId=1&targetType=JOB&targetId=1
+
+
+### ============================================
+### 6. Integrated Test Scenario (통합 시나리오)
+### ============================================
+
+### 6-1. Job 생성
+POST http://localhost:8080/api/jobs
+Content-Type: application/json
+
+{
+  "url": "https://example.com/job/integration-test",
+  "company": "Integration Company",
+  "title": "Full Stack Developer",
+  "location": "Seoul",
+  "startedAt": "2025-01-01T00:00:00Z",
+  "careerLevel": "ENTRY",
+  "employmentType": "FULL_TIME",
+  "remotePolicy": "HYBRID"
+}
+
+### 6-2. Job에 댓글 작성 (userId=1 가정)
+POST http://localhost:8080/api/comments
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "content": "This job looks great!",
+  "targetType": "JOB",
+  "targetId": 1
+}
+
+### 6-3. Job 댓글 조회 (nickname 확인)
+GET http://localhost:8080/api/comments?targetType=JOB&targetId=1
+
+### 6-4. Job에 좋아요
+POST http://localhost:8080/api/reactions/like
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "targetType": "JOB",
+  "targetId": 1
+}
+
+### 6-5. CommunityPost 생성 (같은 회사)
+POST http://localhost:8080/api/community-posts
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "category": "INTERVIEW_SHARE",
+  "title": "Integration Company 면접 후기",
+  "markdownBody": "면접 경험을 공유합니다.",
+  "company": "Integration Company",
+  "location": "Seoul"
+}
+
+### 6-6. CommunityPost 조회 (nickname 확인)
+GET http://localhost:8080/api/community-posts/1
+
+
+### ============================================
+### 7. Error Test Cases (에러 케이스)
+### ============================================
+
+### 7-1. 존재하지 않는 댓글 조회
+GET http://localhost:8080/api/comments?targetType=JOB&targetId=999
+
+### 7-2. 존재하지 않는 게시글 조회
+GET http://localhost:8080/api/community-posts/999
+
+### 7-3. 잘못된 댓글 작성 (필수 필드 누락)
+POST http://localhost:8080/api/comments
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "targetType": "JOB"
+}
+
+### 7-4. 잘못된 게시글 작성 (필수 필드 누락)
+POST http://localhost:8080/api/community-posts
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "category": "INTERVIEW_SHARE"
+}
+
+
+### ============================================
+### 8. Swagger & H2 Console
+### ============================================
+
+### 8-1. Swagger UI
+# Open in browser: http://localhost:8080/swagger-ui.html
+
+### 8-2. API Docs
+# Open in browser: http://localhost:8080/api-docs
+
+### 8-3. H2 Console
+# Open in browser: http://localhost:8080/h2-console
+# JDBC URL: jdbc:h2:mem:testdb
+# Username: sa
+# Password: (empty)
