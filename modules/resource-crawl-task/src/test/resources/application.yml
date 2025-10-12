@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: external-resource-crawl-test
+
+  ai:
+    openai:
+      api-key: ${OPENAI_KEY}
+
+# Firecrawl API 설정
+firecrawl:
+  api-key: ${FIRECRAWL_API_KEY}
+
+# Playwright 설정
+playwright:
+  wait-after-load-ms: 5000
+
+crawler:
+  job:
+    listurl:
+      google: https://www.google.com/about/careers/applications/jobs/results?sort_by=date&q=%22Software%20Engineer%22
+      meta: https://www.metacareers.com/jobs?q=software%20engineer&sort_by_new=true
+logging:
+  level:
+    dev.breakin.crawler: DEBUG
