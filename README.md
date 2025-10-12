@@ -1,4 +1,4 @@
-# Module Structure
+# breakin.dev |  Module Structure
 
 This document describes the module organization of the Breakin backend project.
 
