@@ -30,29 +30,23 @@ class DefaultJobWriterTest {
     private final Job sampleJob = new Job(
         1L,                              // jobId
         "https://example.com/job/1",     // url
-        Company.META,                  // company
+        Company.META,                    // company
         "test title",                    // title
         "test organization",             // organization
-        "test markdown body",            // markdownBody
         "test one line summary",         // oneLineSummary
-        0,                               // minYears
-        3,                               // maxYears
-        false,                           // experienceRequired
-        CareerLevel.ENTRY,               // careerLevel
+        ExperienceRequirement.of(0, 3, false, CareerLevel.ENTRY), // experience
         EmploymentType.FULL_TIME,        // employmentType
-        PositionCategory.ENGINEERING,    // positionCategory
+        PositionCategory.BACKEND,        // positionCategory
         RemotePolicy.ONSITE,             // remotePolicy
         List.of(TechCategory.JAVA),      // techCategories
         Instant.now(),                   // startedAt
         null,                            // endedAt
         false,                           // isOpenEnded
         false,                           // isClosed
-        List.of("Seoul"),                         // location
-        false,                           // hasAssignment
-        false,                           // hasCodingTest
-        false,                           // hasLiveCoding
-        3,                               // interviewCount
-        7,                               // interviewDays
+        List.of("Seoul"),                // locations
+        JobDescription.of(null, List.of(), List.of(), List.of(), null), // description
+        InterviewProcess.of(false, false, false, 3, 7), // interviewProcess
+        JobCompensation.empty(),         // compensation
         Popularity.empty(),              // popularity
         false,                           // isDeleted
         Instant.now(),                   // createdAt
@@ -67,7 +61,7 @@ class DefaultJobWriterTest {
             Company.META,
             "new title",
             "new organization",
-            "new markdown body",
+            "new full description",
             List.of("Seoul")
         );
         when(jobRepository.save(any(Job.class)))
@@ -87,12 +81,14 @@ class DefaultJobWriterTest {
         // given
         Job updatedJob = new Job(
             1L, "https://example.com/job/1", Company.META, "updated title",
-            "test organization", "updated body", "updated summary",
-            0, 3, false, CareerLevel.ENTRY, EmploymentType.FULL_TIME,
-            PositionCategory.ENGINEERING, RemotePolicy.ONSITE, List.of(TechCategory.JAVA),
-            Instant.now(), null, false, false, List.of("Seoul"),
-            false, false, false, 3, 7,
-            Popularity.empty(), false, Instant.now(), Instant.now()
+            "test organization", "updated summary",
+            ExperienceRequirement.of(0, 3, false, CareerLevel.ENTRY),
+            EmploymentType.FULL_TIME, PositionCategory.BACKEND, RemotePolicy.ONSITE,
+            List.of(TechCategory.JAVA), Instant.now(), null, false, false,
+            List.of("Seoul"),
+            JobDescription.of(null, List.of(), List.of(), List.of(), null),
+            InterviewProcess.of(false, false, false, 3, 7),
+            JobCompensation.empty(), Popularity.empty(), false, Instant.now(), Instant.now()
         );
         when(jobRepository.save(any(Job.class)))
             .thenReturn(updatedJob);
@@ -102,7 +98,7 @@ class DefaultJobWriterTest {
 
         // then
         assertNotNull(result);
-        assertEquals("updated company", result.getCompany());
+        assertEquals(Company.META, result.getCompany());
         assertEquals("updated title", result.getTitle());
         verify(jobRepository).save(updatedJob);
     }
@@ -112,12 +108,14 @@ class DefaultJobWriterTest {
         // given
         Job jobWithTech = new Job(
             null, "https://example.com/job/tech", Company.META, "tech title",
-            "tech org", "tech body", null, 0, 5, false,
-            CareerLevel.EXPERIENCED, EmploymentType.FULL_TIME, PositionCategory.ENGINEERING,
-            RemotePolicy.ONSITE, List.of(TechCategory.JAVA, TechCategory.MYSQL),
+            "tech org", null,
+            ExperienceRequirement.of(0, 5, false, CareerLevel.EXPERIENCED),
+            EmploymentType.FULL_TIME, PositionCategory.BACKEND, RemotePolicy.ONSITE,
+            List.of(TechCategory.JAVA, TechCategory.MYSQL),
             Instant.now(), null, false, false, List.of("Seoul"),
-            true, true, false, 2, 5,
-            Popularity.empty(), false, Instant.now(), Instant.now()
+            JobDescription.of(null, List.of(), List.of(), List.of(), null),
+            InterviewProcess.of(true, true, false, 2, 5),
+            JobCompensation.empty(), Popularity.empty(), false, Instant.now(), Instant.now()
         );
         when(jobRepository.save(any(Job.class)))
             .thenReturn(jobWithTech);

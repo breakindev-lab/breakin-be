@@ -1,6 +1,7 @@
 package dev.breakin.service.job.impl;
 
 import dev.breakin.infra.job.repository.JobRepository;
+import dev.breakin.model.common.Company;
 import dev.breakin.model.common.Popularity;
 import dev.breakin.model.common.TechCategory;
 import dev.breakin.model.job.*;
@@ -33,29 +34,23 @@ class DefaultJobReaderTest {
     private final Job sampleJob = new Job(
         1L,                              // jobId
         "https://example.com/job/1",     // url
-        "test company",                  // company
+        Company.META,                    // company
         "test title",                    // title
         "test organization",             // organization
-        "test markdown body",            // markdownBody
         "test one line summary",         // oneLineSummary
-        0,                               // minYears
-        3,                               // maxYears
-        false,                           // experienceRequired
-        CareerLevel.ENTRY,               // careerLevel
+        ExperienceRequirement.of(0, 3, false, CareerLevel.ENTRY), // experience
         EmploymentType.FULL_TIME,        // employmentType
-        PositionCategory.ENGINEERING,    // positionCategory
+        PositionCategory.BACKEND,        // positionCategory
         RemotePolicy.ONSITE,             // remotePolicy
         List.of(TechCategory.JAVA),      // techCategories
         Instant.now(),                   // startedAt
         null,                            // endedAt
         false,                           // isOpenEnded
         false,                           // isClosed
-        "Seoul",                         // location
-        false,                           // hasAssignment
-        false,                           // hasCodingTest
-        false,                           // hasLiveCoding
-        3,                               // interviewCount
-        7,                               // interviewDays
+        List.of("Seoul"),                // locations
+        JobDescription.of(null, List.of(), List.of(), List.of(), null), // description
+        InterviewProcess.of(false, false, false, 3, 7), // interviewProcess
+        JobCompensation.empty(),         // compensation
         Popularity.empty(),              // popularity
         false,                           // isDeleted
         Instant.now(),                   // createdAt
@@ -190,7 +185,7 @@ class DefaultJobReaderTest {
     @Test
     void getByCompany_existingCompany_returnsList() {
         // given
-        String company = "test company";
+        String company = Company.META.name();
         List<Job> jobs = List.of(sampleJob);
         when(jobRepository.findByCompany(company))
             .thenReturn(jobs);
@@ -201,7 +196,7 @@ class DefaultJobReaderTest {
         // then
         assertNotNull(result);
         assertEquals(1, result.size());
-        assertEquals(company, result.get(0).getCompany());
+        assertEquals(Company.META, result.get(0).getCompany());
         verify(jobRepository).findByCompany(company);
     }
 
