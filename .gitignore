@@ -156,3 +156,10 @@ gradle/
 
 # Daily todos
 daily_todos/
+# macOS
+.DS_Store
+
+# Personal notes
+TODO.md
+jobdoc.md
+project_plan/
