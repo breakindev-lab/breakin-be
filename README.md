@@ -22,6 +22,13 @@ modules/
 
 ### 1. Applications (`applications/`)
 
+> **Deployment Units**: Applications represent independent deployment units.
+> You can configure which modules to include based on your hardware resource planning:
+> - API applications can selectively scan and register `apis` modules
+> - Batch applications can selectively scan and register `tasks` modules
+>
+> This allows flexible deployment strategies (monolith, microservices, or hybrid).
+
 Executable Spring Boot applications that serve as entry points.
 
 - **`api-application`**: REST API server
