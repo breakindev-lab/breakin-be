@@ -1,4 +1,4 @@
-package dev.breakin.sync.es;
+package dev.breakin.sync.task.task.es;
 
 import dev.breakin.elasticsearch.api.job.JobIndexer;
 import dev.breakin.elasticsearch.document.JobDoc;

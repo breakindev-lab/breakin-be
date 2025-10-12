@@ -11,6 +11,8 @@ spring:
   sql:
     init:
       mode: embedded
+      # To enable outbox events table, uncomment the following line:
+      # schema-locations: classpath:schema.sql,classpath:schema-outbox.sql
 
 server:
   port: 8081  # API 서버와 다른 포트
