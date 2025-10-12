@@ -24,7 +24,7 @@ dependencies {
     runtimeOnly("com.h2database:h2")
 
     // Project modules
-    implementation(project(":modules:openai-base"))
+    implementation(project(":modules:common:openai-base"))
     implementation(project(":modules:model"))
     implementation(project(":modules:infrastructure"))
     implementation(project(":modules:repository-jdbc"))

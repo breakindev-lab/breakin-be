@@ -163,3 +163,7 @@ daily_todos/
 TODO.md
 jobdoc.md
 project_plan/
+
+
+.idea/gradle.xml
+.idea/misc.xml

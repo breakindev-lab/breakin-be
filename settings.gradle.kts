@@ -4,22 +4,28 @@
 
 rootProject.name = "breakin-be"
 
-// 향후 모듈들이 여기에 추가됩니다
+// Applications (실행 가능한 애플리케이션)
+include(":modules:applications:api-application")
+include(":modules:applications:batch-application")
+
+// Tasks (배치 작업 모듈)
+include(":modules:tasks:resource-crawl-task")
+include(":modules:tasks:elasticsearch-sync-task")
+
+// Common (범용 기술 모듈)
+include(":modules:common:openai-base")
+
+// Business modules (비즈니스 로직 모듈)
 include(":modules:model")
 include(":modules:exception")
 include(":modules:infrastructure")
 include(":modules:service")
 include(":modules:repository-jdbc")
 include(":modules:api")
-include(":modules:schema")
-include(":modules:application-api")
-include(":modules:application-batch")
-include(":modules:openai-base")
 include(":modules:elasticsearch")
 include(":modules:auth")
-include(":modules:resource-crawl-task")
 include(":modules:outbox")
-include(":modules:elasticsearch-sync-task")
+include(":modules:schema")
 pluginManagement {
     buildscript {
         repositories {
@@ -37,5 +43,3 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-include("modules:openai-base")
-include("modules:elasticsearch")

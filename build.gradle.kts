@@ -20,28 +20,38 @@ allprojects {
     }
 }
 
-// 모듈이 생성되면 여기에 추가됩니다
+// ============================================================
+// 프로젝트 모듈 구조
+// ============================================================
+// - applications: 실행 가능한 애플리케이션 (bootJar enabled)
+// - tasks: 배치 작업 단위 모듈
+// - common: 범용 기술 통합 모듈 (OpenAI, Prometheus, Logging 등)
+// - (root): 프로젝트 고유 비즈니스 로직 모듈
+// ============================================================
+
 val javaProjects = listOf(
+    // Applications (실행 가능한 애플리케이션)
+    project(":modules:applications:api-application"),
+    project(":modules:applications:batch-application"),
+
+    // Tasks (배치 작업 모듈)
+    project(":modules:tasks:resource-crawl-task"),
+    project(":modules:tasks:elasticsearch-sync-task"),
+
+    // Common (범용 기술 모듈)
+    project(":modules:common:openai-base"),
+
+    // Business modules (비즈니스 로직)
     project(":modules:model"),
     project(":modules:exception"),
     project(":modules:infrastructure"),
     project(":modules:service"),
     project(":modules:repository-jdbc"),
     project(":modules:api"),
-    project(":modules:schema"),
-    project(":modules:application-api"),
-    project(":modules:openai-base"),
     project(":modules:elasticsearch"),
     project(":modules:auth"),
-
-    project(":modules:resource-crawl-task"),
-
-    project(":modules:application-batch"),
     project(":modules:outbox"),
-     project(":modules:elasticsearch-sync-task")
-
-
-
+    project(":modules:schema")
 )
 
 configure(javaProjects) {

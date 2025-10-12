@@ -4,7 +4,7 @@ apply(plugin = "io.spring.dependency-management")
 
 dependencies {
     // Batch modules
-    implementation(project(":modules:resource-crawl-task"))
+    implementation(project(":modules:tasks:resource-crawl-task"))
 
     // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter")
