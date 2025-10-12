@@ -153,3 +153,6 @@ gradle-app.setting
 .idea
 
 gradle/
+
+# Daily todos
+daily_todos/
