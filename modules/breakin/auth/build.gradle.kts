@@ -6,27 +6,24 @@ apply(plugin = "org.springframework.boot")
 apply(plugin = "io.spring.dependency-management")
 
 dependencies {
-    // Spring Core
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework:spring-context")
+    // Spring Security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-web")
 
-    // Database
-    runtimeOnly("com.h2database:h2")
-
-    // Project modules
+    // User 조회를 위한 의존성
     implementation(project(":modules:breakin:model"))
-    implementation(project(":modules:breakin:exception"))
-    implementation(project(":modules:breakin:outbox"))
-    implementation(project(":modules:breakin:elasticsearch"))
     implementation(project(":modules:breakin:infrastructure"))
 
     // Lombok
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
+    // Logging
+    implementation("org.slf4j:slf4j-api")
+
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("com.h2database:h2")
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {

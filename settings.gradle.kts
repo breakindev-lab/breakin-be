@@ -14,18 +14,24 @@ include(":modules:tasks:elasticsearch-sync-task")
 
 // Common (범용 기술 모듈)
 include(":modules:common:openai-base")
+include(":modules:common:logging")
 
-// Business modules (비즈니스 로직 모듈)
-include(":modules:model")
-include(":modules:exception")
-include(":modules:infrastructure")
-include(":modules:service")
-include(":modules:repository-jdbc")
-include(":modules:api")
-include(":modules:elasticsearch")
-include(":modules:auth")
-include(":modules:outbox")
+// APIs (외부 인터페이스 레이어)
+include(":modules:apis:api")
+include(":modules:apis:search-api")
+
+// Schema (데이터베이스 스키마)
 include(":modules:schema")
+
+// Breakin (프로젝트 고유 비즈니스 모듈)
+include(":modules:breakin:model")
+include(":modules:breakin:service")
+include(":modules:breakin:exception")
+include(":modules:breakin:infrastructure")
+include(":modules:breakin:repository-jdbc")
+include(":modules:breakin:elasticsearch")
+include(":modules:breakin:auth")
+include(":modules:breakin:outbox")
 pluginManagement {
     buildscript {
         repositories {

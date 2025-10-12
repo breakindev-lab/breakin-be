@@ -40,18 +40,24 @@ val javaProjects = listOf(
 
     // Common (범용 기술 모듈)
     project(":modules:common:openai-base"),
+    project(":modules:common:logging"),
 
-    // Business modules (비즈니스 로직)
-    project(":modules:model"),
-    project(":modules:exception"),
-    project(":modules:infrastructure"),
-    project(":modules:service"),
-    project(":modules:repository-jdbc"),
-    project(":modules:api"),
-    project(":modules:elasticsearch"),
-    project(":modules:auth"),
-    project(":modules:outbox"),
-    project(":modules:schema")
+    // APIs (외부 인터페이스 레이어)
+    project(":modules:apis:api"),
+    project(":modules:apis:search-api"),
+
+    // Schema (데이터베이스 스키마)
+    project(":modules:schema"),
+
+    // Breakin (프로젝트 고유 비즈니스 모듈)
+    project(":modules:breakin:model"),
+    project(":modules:breakin:service"),
+    project(":modules:breakin:exception"),
+    project(":modules:breakin:infrastructure"),
+    project(":modules:breakin:repository-jdbc"),
+    project(":modules:breakin:elasticsearch"),
+    project(":modules:breakin:auth"),
+    project(":modules:breakin:outbox")
 )
 
 configure(javaProjects) {

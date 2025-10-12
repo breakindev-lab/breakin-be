@@ -3,8 +3,12 @@ apply(plugin = "org.springframework.boot")
 apply(plugin = "io.spring.dependency-management")
 
 dependencies {
+    // Common modules
+    implementation(project(":modules:common:logging"))
+
     // Batch modules
     implementation(project(":modules:tasks:resource-crawl-task"))
+    implementation(project(":modules:tasks:elasticsearch-sync-task"))
 
     // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter")

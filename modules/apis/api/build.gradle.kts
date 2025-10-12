@@ -6,22 +6,20 @@ apply(plugin = "org.springframework.boot")
 apply(plugin = "io.spring.dependency-management")
 
 dependencies {
-    implementation(project(":modules:apis:api"))
-    implementation(project(":modules:breakin:exception"))
+    implementation(project(":modules:breakin:model"))
     implementation(project(":modules:breakin:service"))
-    implementation(project(":modules:breakin:repository-jdbc"))
-    implementation(project(":modules:schema"))  // DDL/DML 스크립트
 
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
-
-    runtimeOnly("com.h2database:h2")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+    enabled = false
+}
+
+tasks.named<Jar>("jar") {
     enabled = true
-    archiveClassifier = ""
 }

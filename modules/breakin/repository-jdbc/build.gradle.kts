@@ -6,25 +6,12 @@ apply(plugin = "org.springframework.boot")
 apply(plugin = "io.spring.dependency-management")
 
 dependencies {
-    // Spring Core
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework:spring-context")
-
-    // Database
-    runtimeOnly("com.h2database:h2")
-
-    // Project modules
     implementation(project(":modules:breakin:model"))
     implementation(project(":modules:breakin:exception"))
-    implementation(project(":modules:breakin:outbox"))
-    implementation(project(":modules:breakin:elasticsearch"))
     implementation(project(":modules:breakin:infrastructure"))
 
-    // Lombok
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
+    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 
-    // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.h2database:h2")
 }

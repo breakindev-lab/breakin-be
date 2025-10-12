@@ -6,27 +6,20 @@ apply(plugin = "org.springframework.boot")
 apply(plugin = "io.spring.dependency-management")
 
 dependencies {
-    // Spring Core
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework:spring-context")
-
-    // Database
-    runtimeOnly("com.h2database:h2")
-
-    // Project modules
     implementation(project(":modules:breakin:model"))
     implementation(project(":modules:breakin:exception"))
-    implementation(project(":modules:breakin:outbox"))
-    implementation(project(":modules:breakin:elasticsearch"))
     implementation(project(":modules:breakin:infrastructure"))
 
-    // Lombok
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
+    implementation("co.elastic.clients:elasticsearch-java:8.12.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.17.0")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.17.0")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.0")
+    implementation("org.springframework:spring-context")
 
-    // Test
+    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("com.h2database:h2")
 }
 
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
