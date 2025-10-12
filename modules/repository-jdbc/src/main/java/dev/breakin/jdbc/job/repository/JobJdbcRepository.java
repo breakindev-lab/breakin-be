@@ -1,8 +1,10 @@
 package dev.breakin.jdbc.job.repository;
 
+import dev.breakin.infra.job.repository.JobRepository;
+import dev.breakin.jdbc.job.repository.collection.*;
+import dev.breakin.jdbc.job.repository.embedded.*;
 import dev.breakin.model.job.Job;
 import dev.breakin.model.job.JobIdentity;
-import dev.breakin.infra.job.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -123,12 +125,8 @@ public class JobJdbcRepository implements JobRepository {
                 entity.getCompany(),
                 entity.getTitle(),
                 entity.getOrganization(),
-                entity.getMarkdownBody(),
                 entity.getOneLineSummary(),
-                entity.getMinYears(),
-                entity.getMaxYears(),
-                entity.getExperienceRequired(),
-                entity.getCareerLevel(),
+                entity.getExperience() != null ? entity.getExperience().toDomain() : null,
                 entity.getEmploymentType(),
                 entity.getPositionCategory(),
                 entity.getRemotePolicy(),
@@ -144,17 +142,16 @@ public class JobJdbcRepository implements JobRepository {
                         entity.getLocations().stream()
                                 .map(JobLocation::getLocationName)
                                 .collect(Collectors.toList()) : List.of(),
-                entity.getPositionIntroduction(),
-                responsibilities,
-                qualifications,
-                preferredQualifications,
-                fullDescription,
-                entity.getHasAssignment(),
-                entity.getHasCodingTest(),
-                entity.getHasLiveCoding(),
-                entity.getInterviewCount(),
-                entity.getInterviewDays(),
-                entity.getPopularity(),
+                dev.breakin.model.job.JobDescription.of(
+                        entity.getPositionIntroduction(),
+                        responsibilities,
+                        qualifications,
+                        preferredQualifications,
+                        fullDescription
+                ),
+                entity.getInterviewProcess() != null ? entity.getInterviewProcess().toDomain() : null,
+                entity.getCompensation() != null ? entity.getCompensation().toDomain() : null,
+                entity.getPopularity() != null ? entity.getPopularity().toDomain() : null,
                 entity.getIsDeleted(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
@@ -168,15 +165,13 @@ public class JobJdbcRepository implements JobRepository {
                 domain.getCompany(),
                 domain.getTitle(),
                 domain.getOrganization(),
-                domain.getMarkdownBody(),
                 domain.getOneLineSummary(),
-                domain.getMinYears(),
-                domain.getMaxYears(),
-                domain.getExperienceRequired(),
-                domain.getCareerLevel(),
+                // ExperienceRequirement - Embeddable로 변환
+                ExperienceRequirementEmbeddable.from(domain.getExperience()),
                 domain.getEmploymentType(),
                 domain.getPositionCategory(),
                 domain.getRemotePolicy(),
+                // TechCategories - String으로 변환
                 domain.getTechCategories() != null ?
                         domain.getTechCategories().stream()
                                 .map(JobTechCategory::new)
@@ -185,30 +180,32 @@ public class JobJdbcRepository implements JobRepository {
                 domain.getEndedAt(),
                 domain.getIsOpenEnded(),
                 domain.getIsClosed(),
+                // Locations
                 domain.getLocations() != null ?
                         domain.getLocations().stream()
                                 .map(JobLocation::new)
                                 .collect(Collectors.toSet()) : new HashSet<>(),
-                domain.getPositionIntroduction(),
-                domain.getResponsibilities() != null ?
-                        domain.getResponsibilities().stream()
+                // JobDescription fields
+                domain.getDescription() != null ? domain.getDescription().getPositionIntroduction() : null,
+                domain.getDescription() != null ? domain.getDescription().getFullDescription() : null,
+                domain.getDescription() != null && domain.getDescription().getResponsibilities() != null ?
+                        domain.getDescription().getResponsibilities().stream()
                                 .map(JobResponsibility::new)
                                 .collect(Collectors.toSet()) : new HashSet<>(),
-                domain.getQualifications() != null ?
-                        domain.getQualifications().stream()
+                domain.getDescription() != null && domain.getDescription().getQualifications() != null ?
+                        domain.getDescription().getQualifications().stream()
                                 .map(JobQualification::new)
                                 .collect(Collectors.toSet()) : new HashSet<>(),
-                domain.getPreferredQualifications() != null ?
-                        domain.getPreferredQualifications().stream()
+                domain.getDescription() != null && domain.getDescription().getPreferredQualifications() != null ?
+                        domain.getDescription().getPreferredQualifications().stream()
                                 .map(JobPreferredQualification::new)
                                 .collect(Collectors.toSet()) : new HashSet<>(),
-                domain.getFullDescription(),
-                domain.getHasAssignment(),
-                domain.getHasCodingTest(),
-                domain.getHasLiveCoding(),
-                domain.getInterviewCount(),
-                domain.getInterviewDays(),
-                domain.getPopularity(),
+                // InterviewProcess - Embeddable로 변환
+                InterviewProcessEmbeddable.from(domain.getInterviewProcess()),
+                // JobCompensation - Embeddable로 변환
+                JobCompensationEmbeddable.from(domain.getCompensation()),
+                // Popularity - Embeddable로 변환
+                PopularityEmbeddable.from(domain.getPopularity()),
                 domain.getIsDeleted(),
                 domain.getCreatedAt(),
                 domain.getUpdatedAt()

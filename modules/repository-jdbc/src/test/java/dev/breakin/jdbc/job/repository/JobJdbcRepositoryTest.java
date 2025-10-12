@@ -1,5 +1,6 @@
 package dev.breakin.jdbc.job.repository;
 
+import dev.breakin.model.common.Company;
 import dev.breakin.model.common.Popularity;
 import dev.breakin.model.common.TechCategory;
 import dev.breakin.model.job.*;
@@ -35,15 +36,11 @@ class JobJdbcRepositoryTest {
     private final Job sampleJob = new Job(
             null,                           // jobId (자동 생성)
             "https://example.com/job1",     // url
-            "Company A",                    // company
+            Company.META,                   // company
             "Backend Developer",            // title
             "Tech Team",                    // organization
-            "Job description",              // markdownBody
             "One line summary",             // oneLineSummary
-            2,                              // minYears
-            5,                              // maxYears
-            true,                           // experienceRequired
-            CareerLevel.EXPERIENCED,        // careerLevel
+            ExperienceRequirement.of(2, 5, true, CareerLevel.EXPERIENCED), // experience
             EmploymentType.FULL_TIME,       // employmentType
             PositionCategory.BACKEND,       // positionCategory
             RemotePolicy.HYBRID,            // remotePolicy
@@ -53,16 +50,15 @@ class JobJdbcRepositoryTest {
             true,                           // isOpenEnded
             false,                          // isClosed
             List.of("Seoul"),               // locations
-            "Position intro",               // positionIntroduction
-            List.of("Develop APIs", "Write tests"),  // responsibilities
-            List.of("Java 3+ years", "Spring experience"),  // qualifications
-            List.of("MSA experience", "Open source contributions"),  // preferredQualifications
-            "Full job description",         // fullDescription
-            false,                          // hasAssignment
-            true,                           // hasCodingTest
-            false,                          // hasLiveCoding
-            3,                              // interviewCount
-            30,                             // interviewDays
+            JobDescription.of(
+                    "Position intro",
+                    List.of("Develop APIs", "Write tests"),
+                    List.of("Java 3+ years", "Spring experience"),
+                    List.of("MSA experience", "Open source contributions"),
+                    "Full job description"
+            ),                              // description
+            InterviewProcess.of(false, true, false, 3, 30), // interviewProcess
+            JobCompensation.empty(),        // compensation
             Popularity.empty(),             // popularity
             false,                          // isDeleted
             Instant.now(),                  // createdAt
@@ -89,9 +85,11 @@ class JobJdbcRepositoryTest {
         assertThat(saved.getCompany()).isEqualTo(jobToSave.getCompany());
         assertThat(saved.getTitle()).isEqualTo(jobToSave.getTitle());
         assertThat(saved.getOrganization()).isEqualTo(jobToSave.getOrganization());
-        assertThat(saved.getMarkdownBody()).isEqualTo(jobToSave.getMarkdownBody());
-        assertThat(saved.getCareerLevel()).isEqualTo(jobToSave.getCareerLevel());
+        assertThat(saved.getExperience()).isEqualTo(jobToSave.getExperience());
         assertThat(saved.getEmploymentType()).isEqualTo(jobToSave.getEmploymentType());
+        assertThat(saved.getDescription().getFullDescription()).isEqualTo(jobToSave.getDescription().getFullDescription());
+        assertThat(saved.getInterviewProcess()).isEqualTo(jobToSave.getInterviewProcess());
+        assertThat(saved.getCompensation()).isEqualTo(jobToSave.getCompensation());
         assertThat(saved.getLocations()).isEqualTo(jobToSave.getLocations());
         assertThat(saved.getTechCategories().containsAll(jobToSave.getTechCategories())).isTrue();
     }
@@ -139,12 +137,15 @@ class JobJdbcRepositoryTest {
         // given
         Job saved1 = jobRepository.save(sampleJob);
         Job saved2 = jobRepository.save(new Job(
-                null, "https://example.com/job2", "Company B", "Frontend Developer",
-                "Design Team", "Description", "Summary", 1, 3, false,
-                CareerLevel.ENTRY, EmploymentType.CONTRACT, PositionCategory.FRONTEND,
+                null, "https://example.com/job2", Company.GOOGLE, "Frontend Developer",
+                "Design Team", "Summary",
+                ExperienceRequirement.of(1, 3, false, CareerLevel.ENTRY),
+                EmploymentType.CONTRACT, PositionCategory.FRONTEND,
                 RemotePolicy.REMOTE, List.of(TechCategory.JAVA), Instant.now(), null, true, false,
-                List.of("Busan"), "Intro", List.of(), List.of(), List.of(), null,
-                false, false, false, 2, 20, Popularity.empty(), false, Instant.now(), Instant.now()
+                List.of("Busan"),
+                JobDescription.of("Intro", List.of(), List.of(), List.of(), null),
+                InterviewProcess.of(false, false, false, 2, 20),
+                JobCompensation.empty(), Popularity.empty(), false, Instant.now(), Instant.now()
         ));
 
         // when
@@ -195,24 +196,30 @@ class JobJdbcRepositoryTest {
         // given
         Job saved1 = jobRepository.save(sampleJob);
         Job saved2 = jobRepository.save(new Job(
-                null, "https://example.com/job2", "Company A", "Frontend Developer",
-                "Design Team", "Description", "Summary", 1, 3, false,
-                CareerLevel.ENTRY, EmploymentType.CONTRACT, PositionCategory.FRONTEND,
+                null, "https://example.com/job2", Company.META, "Frontend Developer",
+                "Design Team", "Summary",
+                ExperienceRequirement.of(1, 3, false, CareerLevel.ENTRY),
+                EmploymentType.CONTRACT, PositionCategory.FRONTEND,
                 RemotePolicy.REMOTE, List.of(TechCategory.JAVA), Instant.now(), null, true, false,
-                List.of("Busan"), "Intro", List.of(), List.of(), List.of(), null,
-                false, false, false, 2, 20, Popularity.empty(), false, Instant.now(), Instant.now()
+                List.of("Busan"),
+                JobDescription.of("Intro", List.of(), List.of(), List.of(), null),
+                InterviewProcess.of(false, false, false, 2, 20),
+                JobCompensation.empty(), Popularity.empty(), false, Instant.now(), Instant.now()
         ));
         jobRepository.save(new Job(
-                null, "https://example.com/job3", "Company B", "Backend Developer",
-                "Tech Team", "Description", "Summary", 2, 5, true,
-                CareerLevel.EXPERIENCED, EmploymentType.FULL_TIME, PositionCategory.BACKEND,
+                null, "https://example.com/job3", Company.GOOGLE, "Backend Developer",
+                "Tech Team", "Summary",
+                ExperienceRequirement.of(2, 5, true, CareerLevel.EXPERIENCED),
+                EmploymentType.FULL_TIME, PositionCategory.BACKEND,
                 RemotePolicy.HYBRID, List.of(TechCategory.JAVA), Instant.now(), null, true, false,
-                List.of("Seoul"), "Intro", List.of(), List.of(), List.of(), null,
-                false, false, false, 3, 30, Popularity.empty(), false, Instant.now(), Instant.now()
+                List.of("Seoul"),
+                JobDescription.of("Intro", List.of(), List.of(), List.of(), null),
+                InterviewProcess.of(false, false, false, 3, 30),
+                JobCompensation.empty(), Popularity.empty(), false, Instant.now(), Instant.now()
         ));
 
         // when
-        List<Job> found = jobRepository.findByCompany("Company A");
+        List<Job> found = jobRepository.findByCompany(Company.META.name());
 
         // then
         assertThat(found).hasSize(2);

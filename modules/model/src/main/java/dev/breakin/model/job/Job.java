@@ -15,32 +15,25 @@ public class Job implements AuditProps {
     Company company;
     String title;
     String organization;
-    String markdownBody;
     String oneLineSummary;
-    Integer minYears;
-    Integer maxYears;
-    Boolean experienceRequired;
-    CareerLevel careerLevel;
+
+    ExperienceRequirement experience;
     EmploymentType employmentType;
     PositionCategory positionCategory;
     RemotePolicy remotePolicy;
     List<TechCategory> techCategories;
+
     Instant startedAt;
     Instant endedAt;
     Boolean isOpenEnded;
     Boolean isClosed;
     List<String> locations;
-    String positionIntroduction;
-    List<String> responsibilities;
-    List<String> qualifications;
-    List<String> preferredQualifications;
-    String fullDescription;
-    Boolean hasAssignment;
-    Boolean hasCodingTest;
-    Boolean hasLiveCoding;
-    Integer interviewCount;
-    Integer interviewDays;
+
+    JobDescription description;
+    InterviewProcess interviewProcess;
+    JobCompensation compensation;
     Popularity popularity;
+
     Boolean isDeleted;
     Instant createdAt;
     Instant updatedAt;
@@ -50,7 +43,7 @@ public class Job implements AuditProps {
         Company company,
         String title,
         String organization,
-        String markdownBody,
+        String fullDescription,
         List<String> locations
     ) {
         Instant now = Instant.now();
@@ -60,12 +53,8 @@ public class Job implements AuditProps {
             company,
             title,
             organization,
-            markdownBody,
             null,
-            null,
-            null,
-            false,
-            CareerLevel.ENTRY,
+            ExperienceRequirement.empty(),
             EmploymentType.FULL_TIME,
             null,
             RemotePolicy.ONSITE,
@@ -75,16 +64,9 @@ public class Job implements AuditProps {
             false,
             false,
             locations,
-            null,
-            List.of(),
-            List.of(),
-            List.of(),
-            null,
-            false,
-            false,
-            false,
-            null,
-            null,
+            JobDescription.of(null, List.of(), List.of(), List.of(), fullDescription),
+            InterviewProcess.empty(),
+            JobCompensation.empty(),
             Popularity.empty(),
             false,
             now,
@@ -94,84 +76,75 @@ public class Job implements AuditProps {
 
     public Job close() {
         return new Job(
-            jobId, url, company, title, organization, markdownBody, oneLineSummary,
-            minYears, maxYears, experienceRequired, careerLevel, employmentType,
-            positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-            isOpenEnded, true, locations, positionIntroduction, responsibilities,
-            qualifications, preferredQualifications, fullDescription, hasAssignment,
-            hasCodingTest, hasLiveCoding, interviewCount, interviewDays, popularity,
+            jobId, url, company, title, organization, oneLineSummary,
+            experience, employmentType, positionCategory, remotePolicy, techCategories,
+            startedAt, endedAt, isOpenEnded, true, locations,
+            description, interviewProcess, compensation, popularity,
             isDeleted, createdAt, Instant.now()
         );
     }
 
     public Job incrementViewCount() {
         return new Job(
-            jobId, url, company, title, organization, markdownBody, oneLineSummary,
-            minYears, maxYears, experienceRequired, careerLevel, employmentType,
-            positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-            isOpenEnded, isClosed, locations, positionIntroduction, responsibilities,
-            qualifications, preferredQualifications, fullDescription, hasAssignment,
-            hasCodingTest, hasLiveCoding, interviewCount, interviewDays,
-            popularity.incrementViewCount(), isDeleted, createdAt, Instant.now()
+            jobId, url, company, title, organization, oneLineSummary,
+            experience, employmentType, positionCategory, remotePolicy, techCategories,
+            startedAt, endedAt, isOpenEnded, isClosed, locations,
+            description, interviewProcess, compensation,
+            popularity.incrementViewCount(),
+            isDeleted, createdAt, Instant.now()
         );
     }
 
     public Job incrementViewCount(long adder) {
         return new Job(
-                jobId, url, company, title, organization, markdownBody, oneLineSummary,
-                minYears, maxYears, experienceRequired, careerLevel, employmentType,
-                positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-                isOpenEnded, isClosed, locations, positionIntroduction, responsibilities,
-                qualifications, preferredQualifications, fullDescription, hasAssignment,
-                hasCodingTest, hasLiveCoding, interviewCount, interviewDays,
-                popularity.incrementViewCount(adder), isDeleted, createdAt, Instant.now()
+            jobId, url, company, title, organization, oneLineSummary,
+            experience, employmentType, positionCategory, remotePolicy, techCategories,
+            startedAt, endedAt, isOpenEnded, isClosed, locations,
+            description, interviewProcess, compensation,
+            popularity.incrementViewCount(adder),
+            isDeleted, createdAt, Instant.now()
         );
     }
 
     public Job incrementCommentCount() {
         return new Job(
-            jobId, url, company, title, organization, markdownBody, oneLineSummary,
-            minYears, maxYears, experienceRequired, careerLevel, employmentType,
-            positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-            isOpenEnded, isClosed, locations, positionIntroduction, responsibilities,
-            qualifications, preferredQualifications, fullDescription, hasAssignment,
-            hasCodingTest, hasLiveCoding, interviewCount, interviewDays,
-            popularity.incrementCommentCount(), isDeleted, createdAt, Instant.now()
+            jobId, url, company, title, organization, oneLineSummary,
+            experience, employmentType, positionCategory, remotePolicy, techCategories,
+            startedAt, endedAt, isOpenEnded, isClosed, locations,
+            description, interviewProcess, compensation,
+            popularity.incrementCommentCount(),
+            isDeleted, createdAt, Instant.now()
         );
     }
 
     public Job incrementLikeCount() {
         return new Job(
-            jobId, url, company, title, organization, markdownBody, oneLineSummary,
-            minYears, maxYears, experienceRequired, careerLevel, employmentType,
-            positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-            isOpenEnded, isClosed, locations, positionIntroduction, responsibilities,
-            qualifications, preferredQualifications, fullDescription, hasAssignment,
-            hasCodingTest, hasLiveCoding, interviewCount, interviewDays,
-            popularity.incrementLikeCount(), isDeleted, createdAt, Instant.now()
+            jobId, url, company, title, organization, oneLineSummary,
+            experience, employmentType, positionCategory, remotePolicy, techCategories,
+            startedAt, endedAt, isOpenEnded, isClosed, locations,
+            description, interviewProcess, compensation,
+            popularity.incrementLikeCount(),
+            isDeleted, createdAt, Instant.now()
         );
     }
 
     public Job decrementLikeCount() {
         return new Job(
-            jobId, url, company, title, organization, markdownBody, oneLineSummary,
-            minYears, maxYears, experienceRequired, careerLevel, employmentType,
-            positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-            isOpenEnded, isClosed, locations, positionIntroduction, responsibilities,
-            qualifications, preferredQualifications, fullDescription, hasAssignment,
-            hasCodingTest, hasLiveCoding, interviewCount, interviewDays,
-            popularity.decrementLikeCount(), isDeleted, createdAt, Instant.now()
+            jobId, url, company, title, organization, oneLineSummary,
+            experience, employmentType, positionCategory, remotePolicy, techCategories,
+            startedAt, endedAt, isOpenEnded, isClosed, locations,
+            description, interviewProcess, compensation,
+            popularity.decrementLikeCount(),
+            isDeleted, createdAt, Instant.now()
         );
     }
 
     public Job markAsDeleted() {
         return new Job(
-            jobId, url, company, title, organization, markdownBody, oneLineSummary,
-            minYears, maxYears, experienceRequired, careerLevel, employmentType,
-            positionCategory, remotePolicy, techCategories, startedAt, endedAt,
-            isOpenEnded, isClosed, locations, positionIntroduction, responsibilities,
-            qualifications, preferredQualifications, fullDescription, hasAssignment,
-            hasCodingTest, hasLiveCoding, interviewCount, interviewDays, popularity,
+            jobId, url, company, title, organization, oneLineSummary,
+            experience, employmentType, positionCategory, remotePolicy, techCategories,
+            startedAt, endedAt, isOpenEnded, isClosed, locations,
+            description, interviewProcess, compensation, popularity,
             true, createdAt, Instant.now()
         );
     }

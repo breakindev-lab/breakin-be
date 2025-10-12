@@ -1,5 +1,6 @@
 package dev.breakin.api.job.dto;
 
+import dev.breakin.model.common.Company;
 import dev.breakin.model.common.Popularity;
 import dev.breakin.model.common.TechCategory;
 import dev.breakin.model.job.*;
@@ -48,18 +49,42 @@ public class JobRequest {
 
     public Job toJob() {
         Instant now = Instant.now();
+
+        // Company enum 변환
+        Company companyEnum = Company.valueOf(company.toUpperCase());
+
+        // 중첩 객체 생성
+        ExperienceRequirement experience = ExperienceRequirement.of(
+            minYears,
+            maxYears,
+            experienceRequired != null ? experienceRequired : false,
+            careerLevel != null ? careerLevel : CareerLevel.ENTRY
+        );
+
+        JobDescription description = JobDescription.of(
+            null,  // positionIntroduction
+            List.of(),  // responsibilities
+            List.of(),  // qualifications
+            List.of(),  // preferredQualifications
+            markdownBody  // fullDescription
+        );
+
+        InterviewProcess interview = InterviewProcess.of(
+            hasAssignment != null ? hasAssignment : false,
+            hasCodingTest != null ? hasCodingTest : false,
+            hasLiveCoding != null ? hasLiveCoding : false,
+            interviewCount,
+            interviewDays
+        );
+
         return new Job(
                 jobId,
                 url,
-                company,
+                companyEnum,
                 title,
                 organization,
-                markdownBody,
                 oneLineSummary,
-                minYears,
-                maxYears,
-                experienceRequired != null ? experienceRequired : false,
-                careerLevel != null ? careerLevel : CareerLevel.ENTRY,
+                experience,
                 employmentType != null ? employmentType : EmploymentType.FULL_TIME,
                 positionCategory,
                 remotePolicy != null ? remotePolicy : RemotePolicy.ONSITE,
@@ -68,12 +93,10 @@ public class JobRequest {
                 endedAt,
                 isOpenEnded != null ? isOpenEnded : false,
                 isClosed != null ? isClosed : false,
-                location,
-                hasAssignment != null ? hasAssignment : false,
-                hasCodingTest != null ? hasCodingTest : false,
-                hasLiveCoding != null ? hasLiveCoding : false,
-                interviewCount,
-                interviewDays,
+                location != null ? List.of(location) : List.of(),  // String → List<String>
+                description,
+                interview,
+                JobCompensation.empty(),
                 Popularity.empty(),
                 false,
                 now,

@@ -2,6 +2,7 @@ package dev.breakin.api.job;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.breakin.api.job.dto.JobResponse;
+import dev.breakin.model.common.Company;
 import dev.breakin.model.common.Popularity;
 import dev.breakin.model.common.TechCategory;
 import dev.breakin.model.job.*;
@@ -46,15 +47,11 @@ class JobApiControllerTest {
     private final Job sampleJob = new Job(
             1L,                                  // jobId
             "https://test.com/job/1",           // url
-            "Test Company",                     // company
+            Company.GOOGLE,                     // company
             "Senior Backend Developer",         // title
             "Engineering Team",                 // organization
-            "Test markdown body",               // markdownBody
             "Great opportunity",                // oneLineSummary
-            3,                                  // minYears
-            7,                                  // maxYears
-            true,                               // experienceRequired
-            CareerLevel.EXPERIENCED,            // careerLevel
+            ExperienceRequirement.of(3, 7, true, CareerLevel.EXPERIENCED), // experience
             EmploymentType.FULL_TIME,           // employmentType
             PositionCategory.BACKEND,           // positionCategory
             RemotePolicy.HYBRID,                // remotePolicy
@@ -63,12 +60,10 @@ class JobApiControllerTest {
             null,                               // endedAt
             false,                              // isOpenEnded
             false,                              // isClosed
-            "Seoul",                            // location
-            true,                               // hasAssignment
-            true,                               // hasCodingTest
-            false,                              // hasLiveCoding
-            3,                                  // interviewCount
-            14,                                 // interviewDays
+            List.of("Seoul"),                   // locations
+            JobDescription.of(null, List.of(), List.of(), List.of(), "Test markdown body"), // description
+            InterviewProcess.of(true, true, false, 3, 14), // interviewProcess
+            JobCompensation.empty(),            // compensation
             Popularity.empty(),                 // popularity
             false,                              // isDeleted
             Instant.now(),                      // createdAt
@@ -98,7 +93,7 @@ class JobApiControllerTest {
         JobResponse response = objectMapper.readValue(responseJson, JobResponse.class);
 
         assertThat(response.getJobId()).isEqualTo(1L);
-        assertThat(response.getCompany()).isEqualTo("Test Company");
+        assertThat(response.getCompany()).isEqualTo("GOOGLE");
         assertThat(response.getTitle()).isEqualTo("Senior Backend Developer");
         assertThat(response.getCareerLevel()).isEqualTo(CareerLevel.EXPERIENCED);
         assertThat(response.getEmploymentType()).isEqualTo(EmploymentType.FULL_TIME);
@@ -134,7 +129,7 @@ class JobApiControllerTest {
         // when & then - Status Code 검증
         MvcResult result = mockMvc.perform(post("/api/jobs")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"url\":\"https://test.com/job/1\",\"company\":\"Test Company\",\"title\":\"Senior Backend Developer\"}"))
+                        .content("{\"url\":\"https://test.com/job/1\",\"company\":\"GOOGLE\",\"title\":\"Senior Backend Developer\"}"))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -143,7 +138,7 @@ class JobApiControllerTest {
         JobResponse response = objectMapper.readValue(responseJson, JobResponse.class);
 
         assertThat(response.getJobId()).isEqualTo(1L);
-        assertThat(response.getCompany()).isEqualTo("Test Company");
+        assertThat(response.getCompany()).isEqualTo(Company.GOOGLE.name());
         assertThat(response.getTitle()).isEqualTo("Senior Backend Developer");
 
         verify(jobWriter).upsert(any(Job.class));
@@ -153,13 +148,29 @@ class JobApiControllerTest {
     void upsertJob_existingJob_returnsCreatedWithUpdatedJob() throws Exception {
         // given
         Job updatedJob = new Job(
-                1L, "https://test.com/job/1", "Test Company", "Updated Title",
-                "Engineering Team", "Updated body", "Great opportunity",
-                3, 7, true, CareerLevel.EXPERIENCED, EmploymentType.FULL_TIME,
-                PositionCategory.ENGINEERING, RemotePolicy.HYBRID,
-                List.of(TechCategory.JAVA), Instant.now(), null, false, false,
-                "Seoul", true, true, false, 3, 14,
-                Popularity.empty(), false, Instant.now(), Instant.now()
+                1L,
+                "https://test.com/job/1",
+                Company.GOOGLE,
+                "Updated Title",
+                "Engineering Team",
+                "Great opportunity",
+                ExperienceRequirement.of(3, 7, true, CareerLevel.EXPERIENCED),
+                EmploymentType.FULL_TIME,
+                PositionCategory.BACKEND,
+                RemotePolicy.HYBRID,
+                List.of(TechCategory.JAVA),
+                Instant.now(),
+                null,
+                false,
+                false,
+                List.of("Seoul"),
+                JobDescription.of(null, List.of(), List.of(), List.of(), "Updated body"),
+                InterviewProcess.of(true, true, false, 3, 14),
+                JobCompensation.empty(),
+                Popularity.empty(),
+                false,
+                Instant.now(),
+                Instant.now()
         );
 
         when(jobWriter.upsert(any(Job.class)))
@@ -168,7 +179,7 @@ class JobApiControllerTest {
         // when & then
         MvcResult result = mockMvc.perform(post("/api/jobs")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"jobId\":1,\"url\":\"https://test.com/job/1\",\"company\":\"Test Company\",\"title\":\"Updated Title\"}"))
+                        .content("{\"jobId\":1,\"url\":\"https://test.com/job/1\",\"company\":\"META\",\"title\":\"Updated Title\"}"))
                 .andExpect(status().isCreated())
                 .andReturn();
 

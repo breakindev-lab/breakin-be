@@ -43,18 +43,22 @@ public class JobResponse {
     private final Instant updatedAt;
 
     public static JobResponse from(Job job) {
+        var experience = job.getExperience();
+        var description = job.getDescription();
+        var interviewProcess = job.getInterviewProcess();
+
         return new JobResponse(
                 job.getJobId(),
                 job.getUrl(),
-                job.getCompany(),
+                job.getCompany().name(),
                 job.getTitle(),
                 job.getOrganization(),
-                job.getMarkdownBody(),
+                description != null ? description.getFullDescription() : null,
                 job.getOneLineSummary(),
-                job.getMinYears(),
-                job.getMaxYears(),
-                job.getExperienceRequired(),
-                job.getCareerLevel(),
+                experience != null ? experience.getMinYears() : null,
+                experience != null ? experience.getMaxYears() : null,
+                experience != null ? experience.getRequired() : null,
+                experience != null ? experience.getCareerLevel() : null,
                 job.getEmploymentType(),
                 job.getPositionCategory(),
                 job.getRemotePolicy(),
@@ -63,12 +67,13 @@ public class JobResponse {
                 job.getEndedAt(),
                 job.getIsOpenEnded(),
                 job.getIsClosed(),
-                job.getLocation(),
-                job.getHasAssignment(),
-                job.getHasCodingTest(),
-                job.getHasLiveCoding(),
-                job.getInterviewCount(),
-                job.getInterviewDays(),
+                job.getLocations() != null && !job.getLocations().isEmpty()
+                    ? job.getLocations().get(0) : null,
+                interviewProcess != null ? interviewProcess.getHasAssignment() : null,
+                interviewProcess != null ? interviewProcess.getHasCodingTest() : null,
+                interviewProcess != null ? interviewProcess.getHasLiveCoding() : null,
+                interviewProcess != null ? interviewProcess.getInterviewCount() : null,
+                interviewProcess != null ? interviewProcess.getInterviewDays() : null,
                 job.getPopularity(),
                 job.getIsDeleted(),
                 job.getCreatedAt(),

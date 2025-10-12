@@ -1,11 +1,9 @@
 package dev.breakin.jdbc.job.repository;
 
+import dev.breakin.jdbc.job.repository.collection.*;
+import dev.breakin.jdbc.job.repository.embedded.*;
 import dev.breakin.model.common.Company;
-import dev.breakin.model.common.Popularity;
-import dev.breakin.model.job.CareerLevel;
-import dev.breakin.model.job.EmploymentType;
-import dev.breakin.model.job.PositionCategory;
-import dev.breakin.model.job.RemotePolicy;
+import dev.breakin.model.job.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
@@ -20,8 +18,12 @@ import java.util.Set;
  * Job Spring Data JDBC Entity
  *
  * Model 클래스 스펙을 기반으로 생성된 데이터베이스 매핑용 엔티티
- * - Popularity: @Embedded로 jobs 테이블에 컬럼으로 저장
- * - techCategories: 별도 테이블로 정규화
+ * - ExperienceRequirementEmbeddable: @Embedded로 jobs 테이블에 컬럼으로 저장
+ * - InterviewProcessEmbeddable: @Embedded로 jobs 테이블에 컬럼으로 저장
+ * - JobCompensationEmbeddable: @Embedded로 jobs 테이블에 컬럼으로 저장
+ * - PopularityEmbeddable: @Embedded로 jobs 테이블에 컬럼으로 저장
+ * - techCategories, locations: 별도 테이블로 정규화
+ * - JobDescription: Mixed (positionIntroduction/fullDescription은 jobs 테이블, 나머지는 별도 테이블)
  */
 @Table("jobs")
 @Getter
@@ -33,12 +35,12 @@ public class JobEntity {
     private Company company;
     private String title;
     private String organization;
-    private String markdownBody;
     private String oneLineSummary;
-    private Integer minYears;
-    private Integer maxYears;
-    private Boolean experienceRequired;
-    private CareerLevel careerLevel;
+
+    // ExperienceRequirement - Embedded
+    @Embedded.Nullable
+    private ExperienceRequirementEmbeddable experience;
+
     private EmploymentType employmentType;
     private PositionCategory positionCategory;
     private RemotePolicy remotePolicy;
@@ -56,7 +58,9 @@ public class JobEntity {
     @MappedCollection(idColumn = "job_id", keyColumn = "job_id")
     private Set<JobLocation> locations;
 
+    // JobDescription - Mixed approach
     private String positionIntroduction;
+    private String fullDescription;
 
     @MappedCollection(idColumn = "job_id", keyColumn = "job_id")
     private Set<JobResponsibility> responsibilities;
@@ -67,17 +71,17 @@ public class JobEntity {
     @MappedCollection(idColumn = "job_id", keyColumn = "job_id")
     private Set<JobPreferredQualification> preferredQualifications;
 
-    private String fullDescription;
-
-    private Boolean hasAssignment;
-    private Boolean hasCodingTest;
-    private Boolean hasLiveCoding;
-    private Integer interviewCount;
-    private Integer interviewDays;
-
-    // Embedded - jobs 테이블에 컬럼으로 flatten
+    // InterviewProcess - Embedded
     @Embedded.Nullable
-    private Popularity popularity;
+    private InterviewProcessEmbeddable interviewProcess;
+
+    // Compensation - Embedded
+    @Embedded.Nullable
+    private JobCompensationEmbeddable compensation;
+
+    // Popularity - Embedded
+    @Embedded.Nullable
+    private PopularityEmbeddable popularity;
 
     private Boolean isDeleted;
     private Instant createdAt;
